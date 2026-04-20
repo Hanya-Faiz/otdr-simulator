@@ -43,34 +43,16 @@ export const exportViaInjection = async (rawFile, aiTraceData) => {
         // Then Number of Traces (Short = 2 bytes) and Scale Factor (Short = 2 bytes)
         // Then the 16-bit values.
         
-        // We will read the number of data points from the FxdParams OR just dynamically estimate it.
-        // Wait, the safest way is to search for the start of KeyEvents!
-        const keySig = [0x4B, 0x65, 0x79, 0x45, 0x76, 0x65, 0x6E, 0x74, 0x73, 0x00]; // "KeyEvents\0"
-        let keyEventsOffset = -1;
-        for (let i = dataPtsOffset; i < uint8Array.length - 10; i++) {
-          let match = true;
-          for (let j = 0; j < 10; j++) {
-            if (uint8Array[i + j] !== keySig[j]) {
-              match = false;
-              break;
-            }
-          }
-          if (match) {
-            keyEventsOffset = i;
-            break;
-          }
-        }
-        
-        if (keyEventsOffset === -1) {
-           throw new Error("Gagal menemukan batas akhir DataPts (KeyEvents tidak ditemukan).");
-        }
+        // We can simply read the block size from the DataPts header.
+        // SR-4731 header structure: String (8), Version (2), BlockSize (4).
+        const view = new DataView(buffer);
+        const blockSize = view.getInt32(dataPtsOffset + 10, true);
+        const blockEndOffset = dataPtsOffset + blockSize;
         
         // Inside DataPts block, the actual shorts start somewhere after the header.
-        // We know the end is keyEventsOffset.
-        // We can find the start by assuming the raw data array takes up exactly (pts * 2) bytes.
-        // The Scale Factor gives us the multiplier, usually 1000. So 1 dB = 1000. 
-        // We can just overwrite the whole block backwards from keyEventsOffset!
-        // But what if there are padding bytes?
+        // We know the block ends exactly at `blockEndOffset`.
+        // The raw data array takes up exactly (pts * 2) bytes.
+        // We can calculate exactly where the shorts start: blockEndOffset - (pts * 2).
         // Let's use DataView to read the FxdParams block to get the total number of points reliably.
         const fxdSig = [0x46, 0x78, 0x64, 0x50, 0x61, 0x72, 0x61, 0x6D, 0x73, 0x00]; // "FxdParams\0"
         let fxdOffset = -1;
@@ -101,7 +83,7 @@ export const exportViaInjection = async (rawFile, aiTraceData) => {
         // To be absolutely rock solid, we will just parse it with sor-reader to get the scale and data point count!
         // The caller must pass `parsedTemplate` (the result of sor-reader parseSor).
         
-        resolve({ uint8Array, dataPtsOffset, keyEventsOffset });
+        resolve({ uint8Array, dataPtsOffset, blockEndOffset });
       } catch (err) {
         reject(err);
       }
@@ -112,16 +94,17 @@ export const exportViaInjection = async (rawFile, aiTraceData) => {
 };
 
 export const applyInjectionAndDownload = (bufferInfo, parsedTemplate, aiTraceData, fileName) => {
-   const { uint8Array, dataPtsOffset, keyEventsOffset } = bufferInfo;
+   const { uint8Array, dataPtsOffset, blockEndOffset } = bufferInfo;
    const view = new DataView(uint8Array.buffer);
    
    // We know from parsedTemplate how many data points there are.
    const numPoints = parsedTemplate.trace.length;
+   
    // Where do the points start? 
    // Telcordia: length of points is `numPoints * 2` bytes.
-   // They end exactly at `keyEventsOffset`. (Typically no padding).
+   // They end exactly at `blockEndOffset`. (Typically no padding).
    const dataArrayByteLength = numPoints * 2;
-   const dataStartIndex = keyEventsOffset - dataArrayByteLength;
+   const dataStartIndex = blockEndOffset - dataArrayByteLength;
    
    // Verify we aren't overwriting the block header:
    if (dataStartIndex <= dataPtsOffset + 8) {
