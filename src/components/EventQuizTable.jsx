@@ -77,6 +77,7 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
                     }}
                   >
                     <option value="" disabled>-- Pilih jenis anomali --</option>
+                    <option value="normal">Tidak Ada Anomali (Normal)</option>
                     <option value="splice">Splice / Sambungan (Non-Reflektif)</option>
                     <option value="connector">Connector / Konektor (Reflektif)</option>
                     <option value="end">Ujung Kabel (End of Fiber)</option>
@@ -92,9 +93,10 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
                 <td>
                   {showResults && (
                     <span style={{ color: isCorrect ? '#2e7d32' : '#c62828', fontWeight: isCorrect ? 'normal' : 'bold' }}>
-                      {ev.type === 'splice' ? 'Sambungan (Non-Reflektif)' : 
+                      {ev.type === 'normal' ? 'Tidak Ada Anomali (Normal)' :
+                       ev.type === 'splice' ? 'Sambungan (Non-Reflektif)' : 
                        ev.type === 'connector' ? 'Konektor (Reflektif)' : 'Ujung Kabel (End of Fiber)'} 
-                      {ev.loss ? ` (Redaman: ${ev.loss.toFixed(3)} dB)` : ''}
+                      {ev.loss && ev.type !== 'normal' ? ` (Redaman: ${ev.loss.toFixed(3)} dB)` : ''}
                     </span>
                   )}
                 </td>

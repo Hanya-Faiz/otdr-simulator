@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Save, Download, Settings as SettingsIcon, HelpCircle, FolderOpen, Upload, LogOut, FileText, ChevronRight, Minimize2, ZoomIn, ZoomOut, Maximize, Activity, List, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Search, Plus, X } from 'lucide-react';
 import { generateOTDRTrace, detectEventsFromTrace } from './utils/otdrSimulation';
+import { exportToCSV } from './utils/exportSor';
 import { parseSor } from 'sor-reader';
 import OTDRChart from './components/OTDRChart';
 import Sidebar from './components/Sidebar';
@@ -237,7 +238,7 @@ function App() {
           />
           <button className="action-btn" onClick={handleLoadClick}><FolderOpen size={18} /> Baca</button>
           <button className="action-btn"><Save size={18} color="#cfd8dc" /> Simpan</button>
-          <button className="action-btn"><LogOut size={18} color="#cfd8dc" /> Ekspor</button>
+          <button className="action-btn" onClick={() => exportToCSV(traceData, events, { wavelength: '1625', pulseWidth: '500', ior: '1.46948', distanceRange: traceData.length > 0 ? traceData[traceData.length-1].x : 0, dataPoints: traceData.length })}><LogOut size={18} color="#546e7a" /> Ekspor</button>
         </div>
 
         <div className="toolbar-options" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>

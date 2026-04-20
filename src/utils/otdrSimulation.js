@@ -48,15 +48,28 @@ export const generateOTDRTrace = (
        dist = lastEventDistance + 0.2; // Micro bend / close splices
     }
     
-    // Type of event: 0 = splice, 1 = connector
-    const isConnector = Math.random() > 0.5;
+    // Type of event: connector, splice, or normal (noise)
+    const rType = Math.random();
+    let eventType = 'splice';
+    let eLoss = eventLossMin + Math.random() * eventLossMax;
+    let ref = null;
+
+    if (rType > 0.7) {
+      eventType = 'connector';
+      eLoss = 0.2 + Math.random() * 0.5;
+      ref = -40 + Math.random() * 10;
+    } else if (rType < 0.25) {
+      // Fake event / No Anomaly
+      eventType = 'normal';
+      eLoss = Math.random() * 0.02; // extremely tiny or zero
+    }
     
     events.push({
       id: i + 1,
       distance: parseFloat(dist.toFixed(4)),
-      type: isConnector ? 'connector' : 'splice',
-      loss: isConnector ? (0.2 + Math.random() * 0.5) : (eventLossMin + Math.random() * eventLossMax), // dB loss
-      reflectance: isConnector ? -40 + Math.random() * 10 : null, // dB reflectance upward spike
+      type: eventType,
+      loss: eLoss,
+      reflectance: ref,
     });
     
     lastEventDistance = dist;
