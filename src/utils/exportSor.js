@@ -1,4 +1,10 @@
-export const exportToCSV = (traceData, events, sidebarData) => {
+export const exportToSOR = (traceData, events, sidebarData) => {
+  const defaultName = `Trace_Simulated_${new Date().getTime()}`;
+  const fileName = window.prompt("Masukkan nama file untuk disimpan (tanpa ekstensi):", defaultName);
+  
+  // Jika user menekan Cancel (fileName === null) atau string kosong
+  if (!fileName) return; 
+
   let content = "OTDR Trace Data - Simulated\n";
   content += "Source,AI Generator\n";
   content += `Wavelength,${sidebarData.wavelength} nm\n`;
@@ -20,12 +26,15 @@ export const exportToCSV = (traceData, events, sidebarData) => {
     content += `${e.id},${e.distance.toFixed(4)},${e.type},${(e.loss || 0).toFixed(3)},${(e.reflectance || 0).toFixed(3)}\n`;
   });
   
-  const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+  // Note: Using text/plain but saving as .sor
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
+  
+  const finalFilename = fileName.endsWith('.sor') ? fileName : `${fileName}.sor`;
   
   const link = document.createElement('a');
   link.setAttribute('href', url);
-  link.setAttribute('download', `Trace_Simulated_${new Date().getTime()}.csv`);
+  link.setAttribute('download', finalFilename);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
