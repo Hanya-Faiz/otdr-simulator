@@ -365,11 +365,7 @@ function App() {
 
         {/* Info Sidebar */}
         <div className="info-sidebar">
-          <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>&gt;</span>
-            <span style={{ fontWeight: 'bold' }}>Informasi Jejak</span>
-          </div>
-          <Sidebar sidebarData={sidebarData} />
+          <Sidebar sidebarData={sidebarData} cursorData={{A: cursorA, B: cursorB}} />
         </div>
       </div>
 
@@ -590,7 +586,7 @@ function App() {
 
       {isHelpOpen && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: '#f4f6f8', borderRadius: '4px', minWidth: '560px', maxWidth: '640px', boxShadow: '0 8px 24px rgba(0,0,0,0.25)', color: '#263238', fontFamily: "'Inter', 'Segoe UI', sans-serif", overflow: 'hidden' }}>
+          <div style={{ background: '#f4f6f8', borderRadius: '4px', minWidth: '800px', maxWidth: '900px', boxShadow: '0 8px 24px rgba(0,0,0,0.25)', color: '#263238', fontFamily: "'Inter', 'Segoe UI', sans-serif", overflow: 'hidden' }}>
             {/* Modal Title Bar */}
             <div style={{ background: '#455a64', padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ color: '#fff', fontWeight: '600', fontSize: '13px', letterSpacing: '0.5px' }}>YOKOGAWA AQ7933 — Help & Reference</span>
@@ -600,6 +596,171 @@ function App() {
             {/* Modal Body */}
             <div style={{ padding: '20px', maxHeight: '72vh', overflowY: 'auto', fontSize: '13px', lineHeight: '1.6' }}>
               
+              {/* Trace Signatures - Added as requested by user */}
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ fontWeight: '600', fontSize: '12px', color: '#1976d2', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '16px' }}>Trace Signatures Reference</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+                  {/* Connector (Reflective) Block */}
+                  <div style={{ background: '#ffebee', borderLeft: '3px solid #f44336', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#c62828', fontWeight: 'bold', marginBottom: '8px' }}>Connector (Reflective)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #ffcdd2', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M 10 15 L 45 15 L 48 2 L 52 15 L 90 15" stroke="#d32f2f" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Lonjakan tajam menyerupai jarum akibat pantulan cahaya (Fresnel) dari celah konektor udara.
+                    </div>
+                  </div>
+
+                  {/* Splice (Non-Reflective) Block */}
+                  <div style={{ background: '#fff3e0', borderLeft: '3px solid #ff9800', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#e65100', fontWeight: 'bold', marginBottom: '8px' }}>Splice (Non-Reflective)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #ffe0b2', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M 10 5 L 45 5 L 55 15 L 90 15" stroke="#d32f2f" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Penurunan garis seperti anak tangga permanen. Disebabkan oleh peleburan (Penyambungan) atau lekukan.
+                    </div>
+                  </div>
+
+                  {/* End of Fiber Block */}
+                  <div style={{ background: '#e8f5e9', borderLeft: '3px solid #4caf50', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#2e7d32', fontWeight: 'bold', marginBottom: '8px' }}>End of Fiber</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #c8e6c9', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M 10 5 L 45 5 L 55 20 M 55 5 L 55 5" stroke="#388e3c" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" strokeDasharray="100,50" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Pola grafik menurun drastis tak terhingga keluar dari batas area visual noise, menandakan ujung potongan atau putusnya kabel fiber optik.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Kamus Parameter Info */}
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ fontWeight: '600', fontSize: '12px', color: '#1976d2', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '16px' }}>Kamus Parameter Info</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+                  
+                  {/* Wavelength */}
+                  <div style={{ background: '#e1f5fe', borderLeft: '3px solid #0288d1', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#0288d1', fontWeight: 'bold', marginBottom: '8px' }}>Wavelength (Panjang Gelombang)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #b3e5fc', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M 10 10 Q 20 0 30 10 T 50 10 T 70 10 T 90 10" stroke="#0288d1" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Warna laser yang ditembakkan. Biasanya 1310 nm (untuk cek redaman sambungan) atau 1550 nm (jarak jauh & tahan kelokan).
+                    </div>
+                  </div>
+
+                  {/* Pulse Width */}
+                  <div style={{ background: '#e0f2f1', borderLeft: '3px solid #00796b', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#00796b', fontWeight: 'bold', marginBottom: '8px' }}>Pulse Width (Lebar Pulsa)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #b2dfdb', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path d="M 10 15 L 10 5 L 20 5 L 20 15 L 40 15 L 40 5 L 70 5 L 70 15 L 90 15" stroke="#00796b" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />
+                        <text x="15" y="19" fontSize="4" fill="#00796b" textAnchor="middle">10ns</text>
+                        <text x="55" y="19" fontSize="4" fill="#00796b" textAnchor="middle">100ns</text>
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Kecepatan 'kedipan' laser. Kedipan singkat = radar sangat super presisi di jarak dekat. Kedipan lama = tembus jarak berpuluh kilometer.
+                    </div>
+                  </div>
+
+                  {/* IOR */}
+                  <div style={{ background: '#efebe9', borderLeft: '3px solid #5d4037', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#5d4037', fontWeight: 'bold', marginBottom: '8px' }}>IOR (Index of Refraction)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #d7ccc8', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <polygon points="40,20 40,10 90,15 90,20" fill="#d7ccc8" opacity="0.4" />
+                        <path d="M 10 5 L 40 10 L 90 15" stroke="#5d4037" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Indeks bias kepadatan kaca optik murni. Mesin menggunakan angka sakti ini untuk me-convert pantulan debu cahaya menjadi hasil kilometer akurat.
+                    </div>
+                  </div>
+
+                  {/* Distance Range */}
+                  <div style={{ background: '#e8eaf6', borderLeft: '3px solid #3f51b5', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#3f51b5', fontWeight: 'bold', marginBottom: '8px' }}>Distance Range (Zona Tembak)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #c5cae9', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <line x1="10" y1="10" x2="90" y2="10" stroke="#3f51b5" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                        <line x1="10" y1="6" x2="10" y2="14" stroke="#3f51b5" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                        <line x1="90" y1="6" x2="90" y2="14" stroke="#3f51b5" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                        <line x1="50" y1="8" x2="50" y2="12" stroke="#3f51b5" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                        <text x="10" y="5" fontSize="5" fill="#3f51b5" textAnchor="middle">0</text>
+                        <text x="90" y="5" fontSize="5" fill="#3f51b5" textAnchor="middle">10km</text>
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Batas bentangan maksimal radar alat. Secara teori, apabila panjang kabel asli hanya 20 km, maka jangkauan tembak disetel ke batas 30 km.
+                    </div>
+                  </div>
+
+                  {/* Data Size / Resolution */}
+                  <div style={{ background: '#ede7f6', borderLeft: '3px solid #512da8', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#512da8', fontWeight: 'bold', marginBottom: '8px' }}>Data Size / Resolution</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #d1c4e9', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <polyline points="20,15 30,10 40,5 50,5 60,7 70,12 80,15" fill="none" stroke="#d1c4e9" strokeWidth="1" strokeDasharray="2,2" vectorEffect="non-scaling-stroke" />
+                        <circle cx="20" cy="15" r="1.5" fill="#512da8"/>
+                        <circle cx="30" cy="10" r="1.5" fill="#512da8"/>
+                        <circle cx="40" cy="5" r="1.5" fill="#512da8"/>
+                        <circle cx="50" cy="5" r="1.5" fill="#512da8"/>
+                        <circle cx="60" cy="7" r="1.5" fill="#512da8"/>
+                        <circle cx="70" cy="12" r="1.5" fill="#512da8"/>
+                        <circle cx="80" cy="15" r="1.5" fill="#512da8"/>
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Kepadatan titik piksel (Data Size) menentukan jarak antar titik (Resolution). Makin kecil meter resolusinya, grafik makin detail mengukur retakan berdekatan.
+                    </div>
+                  </div>
+
+                  {/* Duration */}
+                  <div style={{ background: '#e8f5e9', borderLeft: '3px solid #388e3c', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#388e3c', fontWeight: 'bold', marginBottom: '8px' }}>Duration (Waktu Ukur)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #c8e6c9', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="30" height="30" viewBox="0 0 30 30">
+                        <circle cx="15" cy="15" r="12" fill="none" stroke="#388e3c" strokeWidth="2" />
+                        <polyline points="15,7 15,15 20,20" fill="none" stroke="#388e3c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Lama waktu tembakan (misal: 15 detik). Makin lama, mesin bisa menumpuk dan merata-rata pantulan cahaya (Averaging) sehingga grafiknya makin mulus bersih dari "noise".
+                    </div>
+                  </div>
+
+                  {/* Total Loss */}
+                  <div style={{ background: '#fce4ec', borderLeft: '3px solid #c2185b', padding: '12px', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ color: '#c2185b', fontWeight: 'bold', marginBottom: '8px' }}>Total Loss (Redaman Total)</div>
+                    <div style={{ background: '#ffffff', border: '1px solid #f8bbd0', borderRadius: '4px', height: '60px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+                      <svg width="80%" height="80%" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <polyline points="10,2 30,2 30,6 60,6 60,12 80,12 80,18 90,18" fill="none" stroke="#c2185b" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                        <line x1="80" y1="2" x2="80" y2="12" stroke="#c2185b" strokeWidth="1" strokeDasharray="2,2" vectorEffect="non-scaling-stroke" />
+                        <path d="M 82 5 L 85 5 M 82 8 L 85 8" stroke="#c2185b" strokeWidth="0.5" />
+                        <text x="89" y="8" fontSize="4" fill="#c2185b">dB</text>
+                      </svg>
+                    </div>
+                    <div style={{ color: '#546e7a', fontSize: '11px', lineHeight: '1.5', flex: 1 }}>
+                      Total gabungan semua kerugian/kebocoran dari seluruh ujung. Target absolut: makin tipis nilai dB-nya, pantulan sinyal makin jos!
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
               {/* Quick Start */}
               <div style={{ marginBottom: '20px' }}>
                 <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Quick Start Guide</div>

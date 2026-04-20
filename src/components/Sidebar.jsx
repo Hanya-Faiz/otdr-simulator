@@ -7,9 +7,10 @@ export default function Sidebar({ sidebarData, cursorData }) {
   return (
     <div className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       
-      <div className="sidebar-content">
-        <div style={{ marginBottom: '16px' }}>
-          <div className="info-section-title">Kondisi Pengukuran</div>
+      <div className="sidebar-content" style={{ flex: 1, overflowY: 'auto' }}>
+          <div style={{ padding: '12px' }}>
+            <div style={{ marginBottom: '16px' }}>
+              <div className="info-section-title">Kondisi Pengukuran</div>
           
           <div className="info-row">
             <div className="info-label">Panjang Gelombang</div>
@@ -98,6 +99,7 @@ export default function Sidebar({ sidebarData, cursorData }) {
           </div>
         )}
 
+          </div>
       </div>
     </div>
   );
