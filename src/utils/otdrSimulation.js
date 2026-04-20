@@ -199,9 +199,32 @@ export const detectEventsFromTrace = (trace) => {
   // 2. Dynamic Thresholds Detection
   const stride = Math.max(15, Math.floor(trace.length / 600)); // Scale with resolution
   
+  // Predict Noise Floor using the end of the trace
+  let endSum = 0;
+  const tailCount = Math.min(500, Math.floor(trace.length / 4));
+  for(let i = trace.length - tailCount; i < trace.length; i++) {
+     endSum += trace[i].y;
+  }
+  const estimatedNoiseFloor = (endSum / tailCount) + 1.5; // +1.5 dB buffer above absolute floor
+
   for (let i = stride; i < smoothedTrace.length - stride; i++) {
     if (smoothedTrace[i].x < 0.1) continue; // Skip initial dead zone
     
+    // Stop scanning and mark End of Fiber if signal drops permanently into noise floor
+    if (smoothedTrace[i].y < estimatedNoiseFloor) {
+      const last = events[events.length - 1];
+      if (!last || last.type !== 'end') {
+         events.push({
+            id: eventId++,
+            distance: smoothedTrace[i].x,
+            type: 'end',
+            loss: smoothedTrace[i - stride].y - smoothedTrace[i].y,
+            rawType: 'AI-Detected (Filtered)'
+         });
+      }
+      break; 
+    }
+
     const pPast = smoothedTrace[i - stride];
     const pNow = smoothedTrace[i];
     const pFuture = smoothedTrace[i + Math.floor(stride * 1.5)];
@@ -217,21 +240,6 @@ export const detectEventsFromTrace = (trace) => {
     // Using simple derivatives on the smoothed curve
     const diffUp = pNow.y - pPast.y;
     const diffDown = pPast.y - pFuture.y;
-
-    // Check end of fiber (massive unrecoverable drop) - Checks this first!
-    if (diffDown > 4.5 && (pNow.y - pFuture.y) > 3.0) {
-      const last = events[events.length - 1];
-      if (!last || (pNow.x - last.distance) > 0.2) {
-        events.push({
-           id: eventId++,
-           distance: pNow.x,
-           type: 'end',
-           loss: diffDown,
-           rawType: 'AI-Detected (Filtered)'
-        });
-        break; 
-      }
-    }
 
     // Check connector (spike up then down)
     if (diffUp > noiseThresh * 1.5 && pNow.y - pFuture.y > noiseThresh) {
