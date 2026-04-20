@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Save, Download, Settings as SettingsIcon, HelpCircle, FolderOpen, Upload, LogOut, FileText, ChevronRight, Minimize2, ZoomIn, ZoomOut, Maximize, Activity, List, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Search, Plus, X } from 'lucide-react';
 import { generateOTDRTrace, detectEventsFromTrace } from './utils/otdrSimulation';
 import { exportToSOR } from './utils/exportSor';
+import { exportViaInjection, applyInjectionAndDownload } from './utils/exportSorInjector';
 import { parseSor } from 'sor-reader';
 import OTDRChart from './components/OTDRChart';
 import Sidebar from './components/Sidebar';
@@ -180,6 +181,34 @@ function App() {
     e.target.value = null;
   };
 
+  const templateInputRef = useRef(null);
+
+  const handleTemplateInjection = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const fileName = window.prompt("Berhasil menyuntik! Masukkan nama file hasil untuk disimpan:", `Hakced_Simulated_${new Date().getTime()}`);
+      if (!fileName) { e.target.value = null; return; }
+
+      // 1. Analyze with the parser to get metrics
+      const buffer = await file.arrayBuffer();
+      const tempUint8 = new Uint8Array(buffer);
+      const parsedTemplate = parseSor(tempUint8, file.name);
+
+      // 2. Perform the memory surgical operation
+      const bufferInfo = await exportViaInjection(file, traceData);
+      applyInjectionAndDownload(bufferInfo, parsedTemplate, traceData, fileName);
+      
+      alert("Operasi Injeksi Biner Berhasil! File Anda sekarang murni menyamar sebagai Yokogawa SR-4731.");
+    } catch (err) {
+      alert("Gagal melakukan Injeksi SOR: " + err.message);
+      console.error(err);
+    }
+    
+    e.target.value = null;
+  };
+
   const handleAnswerChange = (eventId, value) => {
     setUserAnswers(prev => ({
       ...prev,
@@ -236,9 +265,16 @@ function App() {
              style={{ display: 'none' }} 
              onChange={onFileChange} 
           />
+          <input 
+             type="file" 
+             accept=".sor" 
+             ref={templateInputRef} 
+             style={{ display: 'none' }} 
+             onChange={handleTemplateInjection} 
+          />
           <button className="action-btn" onClick={handleLoadClick}><FolderOpen size={18} /> Baca</button>
           <button className="action-btn"><Save size={18} color="#cfd8dc" /> Simpan</button>
-          <button className="action-btn" onClick={() => exportToSOR(traceData, events, { wavelength: '1625', pulseWidth: '500', ior: '1.46948', distanceRange: traceData.length > 0 ? traceData[traceData.length-1].x : 0, dataPoints: traceData.length })}><LogOut size={18} color="#546e7a" /> Ekspor</button>
+          <button className="action-btn" onClick={() => templateInputRef.current?.click()} title="Harus memasukkan template file .sor Yokogawa asli"><LogOut size={18} color="#546e7a" /> Ekspor Biner</button>
         </div>
 
         <div className="toolbar-options" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
