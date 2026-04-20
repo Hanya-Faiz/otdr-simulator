@@ -179,8 +179,8 @@ export const detectEventsFromTrace = (trace) => {
 
   if (trace.length < 100) return events;
 
-  // 1. Moving Average Box Filter to smooth out high-frequency noise
-  const windowSize = 7;
+  // 1. Adaptive Moving Average Box Filter to smooth out high-frequency noise
+  const windowSize = Math.max(7, Math.floor(trace.length / 1500));
   const smoothedTrace = [];
   
   for (let i = 0; i < trace.length; i++) {
@@ -197,22 +197,44 @@ export const detectEventsFromTrace = (trace) => {
   }
 
   // 2. Dynamic Thresholds Detection
-  const stride = 15; // wide window to see true drop vs spike
+  const stride = Math.max(15, Math.floor(trace.length / 600)); // Scale with resolution
   
   for (let i = stride; i < smoothedTrace.length - stride; i++) {
     if (smoothedTrace[i].x < 0.1) continue; // Skip initial dead zone
     
     const pPast = smoothedTrace[i - stride];
     const pNow = smoothedTrace[i];
-    const pFuture = smoothedTrace[i + stride];
+    const pFuture = smoothedTrace[i + Math.floor(stride * 1.5)];
+    
+    // Calculate local noise variance to prevent false positives in high-noise areas
+    let noiseVar = 0;
+    for (let k = i - Math.floor(stride/2); k <= i + Math.floor(stride/2); k++) {
+       noiseVar += Math.abs(smoothedTrace[k].y - trace[k].y);
+    }
+    const localNoise = noiseVar / stride;
+    const noiseThresh = Math.max(0.25, localNoise * 2.5); // Stricter threshold if noisy
     
     // Using simple derivatives on the smoothed curve
     const diffUp = pNow.y - pPast.y;
     const diffDown = pPast.y - pFuture.y;
 
+    // Check end of fiber (massive unrecoverable drop) - Checks this first!
+    if (diffDown > 4.5 && (pNow.y - pFuture.y) > 3.0) {
+      const last = events[events.length - 1];
+      if (!last || (pNow.x - last.distance) > 0.2) {
+        events.push({
+           id: eventId++,
+           distance: pNow.x,
+           type: 'end',
+           loss: diffDown,
+           rawType: 'AI-Detected (Filtered)'
+        });
+        break; 
+      }
+    }
+
     // Check connector (spike up then down)
-    // Dynamic threshold: reflection must be > 0.3 dB on smoothed line (real spikes are huge)
-    if (diffUp > 0.3 && pNow.y - pFuture.y > 0.3) {
+    if (diffUp > noiseThresh * 1.5 && pNow.y - pFuture.y > noiseThresh) {
       const last = events[events.length - 1];
       if (!last || (pNow.x - last.distance) > 0.1) {
         events.push({
@@ -227,40 +249,30 @@ export const detectEventsFromTrace = (trace) => {
       }
     }
     
-    // Check end of fiber (massive unrecoverable drop)
-    if (diffDown > 5.0) {
-      const last = events[events.length - 1];
-      if (!last || (pNow.x - last.distance) > 0.2) {
-        events.push({
-           id: eventId++,
-           distance: pNow.x,
-           type: 'end',
-           loss: diffDown,
-           rawType: 'AI-Detected (Filtered)'
-        });
-        break; 
-      }
-    }
-    
     // Check splice (moderate sudden drop, NO spike)
-    if (diffDown > 0.15 && diffDown <= 5.0 && diffUp < 0.15) {
+    if (diffDown > noiseThresh && diffDown <= 4.5 && diffUp < noiseThresh * 0.5) {
       const last = events[events.length - 1];
       if (!last || (pNow.x - last.distance) > 0.1) {
-        // Confirm it's a permanent drop by checking average of future 10 points
+        // Confirm it's a permanent drop by checking average of future points (LSA mock)
         let futSum = 0;
-        let pAvgFuture = i + stride + 10 < smoothedTrace.length ? i + stride + 10 : smoothedTrace.length - 1;
-        for(let k=i+stride; k<pAvgFuture; k++) { futSum += smoothedTrace[k].y; }
-        let avgFut = futSum / (pAvgFuture - (i+stride));
+        let pAvgFuture = Math.min(smoothedTrace.length - 1, i + stride * 2);
+        let validFutureCount = pAvgFuture - (i + stride);
         
-        if (pPast.y - avgFut > 0.15) {
-            events.push({
-               id: eventId++,
-               distance: pNow.x, 
-               type: 'splice',
-               loss: pPast.y - avgFut, // true loss
-               rawType: 'AI-Detected (Filtered)'
-            });
-            i += stride * 2;
+        if (validFutureCount > 5) {
+            for(let k = i + stride; k < pAvgFuture; k++) { futSum += smoothedTrace[k].y; }
+            let avgFut = futSum / validFutureCount;
+            const trueLoss = pPast.y - avgFut;
+            
+            if (trueLoss > noiseThresh * 0.8) {
+                events.push({
+                   id: eventId++,
+                   distance: pNow.x, 
+                   type: 'splice',
+                   loss: trueLoss,
+                   rawType: 'AI-Detected (Filtered)'
+                });
+                i += stride * 2;
+            }
         }
       }
     }
