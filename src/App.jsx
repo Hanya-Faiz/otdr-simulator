@@ -181,32 +181,51 @@ function App() {
     e.target.value = null;
   };
 
-  const templateInputRef = useRef(null);
-
-  const handleTemplateInjection = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
+  const handleTemplateInjection = async () => {
     try {
-      const fileName = window.prompt("Berhasil menyuntik! Masukkan nama file hasil untuk disimpan:", `Hakced_Simulated_${new Date().getTime()}`);
-      if (!fileName) { e.target.value = null; return; }
-
-      // 1. Analyze with the parser to get metrics
-      const buffer = await file.arrayBuffer();
+      // 1. Fetch the embedded hidden template file from public folder
+      const templateResponse = await fetch('/yokogawa.sor');
+      if (!templateResponse.ok) {
+         alert("File template 'yokogawa.sor' tidak ditemukan di folder public! Mohon letakkan satu contoh file bernama 'yokogawa.sor' di folder public Anda agar bisa dipakai permanen.");
+         return;
+      }
+      const buffer = await templateResponse.arrayBuffer();
       const tempUint8 = new Uint8Array(buffer);
-      const parsedTemplate = parseSor(tempUint8, file.name);
-
-      // 2. Perform the memory surgical operation
-      const bufferInfo = await exportViaInjection(file, traceData);
-      applyInjectionAndDownload(bufferInfo, parsedTemplate, traceData, fileName);
       
-      alert("Operasi Injeksi Biner Berhasil! File Anda sekarang murni menyamar sebagai Yokogawa SR-4731.");
+      const fileName = window.prompt("Suntikan Biner Berhasil! Simpan dengan nama:", `AI_Yokogawa_${new Date().getTime()}`);
+      if (!fileName) return;
+
+      // 2. Analyze with the parser
+      const parsedTemplate = parseSor(tempUint8, 'yokogawa.sor');
+
+      // 3. We cannot use FileReader since it's already a buffer.
+      // We must bypass exportViaInjection which takes a File, and just do the extraction here:
+      const dataPtsSig = [0x44, 0x61, 0x74, 0x61, 0x50, 0x74, 0x73, 0x00];
+      let dataPtsOffset = -1;
+      let matchCount = 0;
+      for (let i = 0; i < tempUint8.length - 8; i++) {
+        let match = true;
+        for (let j=0; j<8; j++) if(tempUint8[i+j] !== dataPtsSig[j]) { match = false; break; }
+        if (match) {
+          matchCount++;
+          if (matchCount === 2) { dataPtsOffset = i; break; }
+        }
+      }
+      
+      if (dataPtsOffset === -1) throw new Error("Gagal menemukan struktur DataPts.");
+      
+      const view = new DataView(buffer);
+      const blockSize = view.getInt32(dataPtsOffset + 10, true);
+      const blockEndOffset = dataPtsOffset + blockSize;
+      
+      const bufferInfo = { uint8Array: tempUint8, dataPtsOffset, blockEndOffset };
+
+      // 4. Perform the memory surgical operation
+      applyInjectionAndDownload(bufferInfo, parsedTemplate, traceData, fileName);
     } catch (err) {
       alert("Gagal melakukan Injeksi SOR: " + err.message);
       console.error(err);
     }
-    
-    e.target.value = null;
   };
 
   const handleAnswerChange = (eventId, value) => {
@@ -265,16 +284,9 @@ function App() {
              style={{ display: 'none' }} 
              onChange={onFileChange} 
           />
-          <input 
-             type="file" 
-             accept=".sor" 
-             ref={templateInputRef} 
-             style={{ display: 'none' }} 
-             onChange={handleTemplateInjection} 
-          />
           <button className="action-btn" onClick={handleLoadClick}><FolderOpen size={18} /> Baca</button>
           <button className="action-btn"><Save size={18} color="#cfd8dc" /> Simpan</button>
-          <button className="action-btn" onClick={() => templateInputRef.current?.click()} title="Harus memasukkan template file .sor Yokogawa asli"><LogOut size={18} color="#546e7a" /> Ekspor Biner</button>
+          <button className="action-btn" onClick={handleTemplateInjection} title="1-Click Export menggunkan Template Yokogawa Asli"><LogOut size={18} color="#546e7a" /> Ekspor Biner</button>
         </div>
 
         <div className="toolbar-options" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
