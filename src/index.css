@@ -308,15 +308,17 @@ button {
 .yk-dpad-icon {
   position: absolute;
   font-weight: 900;
-  font-size: 18px;
-  color: #bdc3c7;
+  color: #aeb5bb;
   z-index: 3;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.yk-dpad-icon.top { top: -2px; left: 33px; font-size: 18px; }
-.yk-dpad-icon.bottom { bottom: 3px; left: 34px; font-size: 20px; line-height: 10px; }
-.yk-dpad-icon.left { left: 8px; top: 26px; font-size: 20px; line-height: 10px; }
-.yk-dpad-icon.right { right: 7px; top: 26px; font-size: 18px; left: unset;}
+.yk-dpad-icon.top { width: 26px; height: 27px; left: 27px; top: 0; font-size: 16px;}
+.yk-dpad-icon.bottom { width: 26px; height: 27px; left: 27px; bottom: 0; font-size: 20px; padding-bottom: 4px; }
+.yk-dpad-icon.left { width: 27px; height: 26px; left: 0; top: 27px; font-size: 20px; padding-bottom: 4px;}
+.yk-dpad-icon.right { width: 27px; height: 26px; right: 0; top: 27px; font-size: 16px; }
 
 .yk-zoom-col {
   display: flex;
