@@ -322,45 +322,63 @@ function App() {
            </div>
         </div>
 
-        {/* Control Panel (D-PAD & Markers) */}
+        {/* Control Panel (Yokogawa Native Style) */}
         <div className="control-panel">
-           <div className="panel-block" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <button className="btn-wide" style={{ border: 'none', borderBottom: '1px solid #ddd' }}>Pencarian Otomatis</button>
-              <button className="btn-wide" style={{ border: 'none', borderBottom: '1px solid #ddd' }}>Pengaturan Analisa</button>
-              <button className="btn-wide" style={{ border: 'none' }}>Pemrosesan Batch</button>
+           <div className="panel-section" style={{ paddingTop: '16px' }}>
+              <button className="yk-btn">Pencarian Otomatis</button>
+              <button className="yk-btn">Pengaturan Analisa</button>
+              <button className="yk-btn">Pemrosesan Batch</button>
            </div>
            
-           <div className="panel-block">
-              <div className="panel-block-title">Kursor</div>
-              <div className="dpad-container">
-                 <button className="dpad-btn dpad-up"><ArrowUp size={14} /></button>
-                 <button className="dpad-btn dpad-left"><ArrowLeft size={14} /></button>
-                 
-                 <div style={{ position: 'absolute', top: '30px', left: '30px', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Search size={14} color="#1976d2" />
+           <div className="panel-section">
+              <div className="yk-section-title">Kursor</div>
+              
+              <div className="yk-dpad-wrapper">
+                 <div className="yk-dpad">
+                    {/* The Cross Backgrounds */}
+                    <div className="yk-cross-v"></div>
+                    <div className="yk-cross-h"></div>
+                    {/* Center piece to hide overlapping inner borders */}
+                    <div className="yk-cross-center">
+                       <Search size={14} color="#5c728a" style={{ transform: 'rotate(90deg)' }} />
+                    </div>
+                    {/* The Icons */}
+                    <div className="yk-dpad-icon top">+</div>
+                    <div className="yk-dpad-icon bottom">-</div>
+                    <div className="yk-dpad-icon left">-</div>
+                    <div className="yk-dpad-icon right">+</div>
                  </div>
 
-                 <button className="dpad-btn dpad-right"><ArrowRight size={14} /></button>
-                 <button className="dpad-btn dpad-down"><ArrowDown size={14} /></button>
+                 <div className="yk-zoom-col">
+                    <button className="yk-zoom-btn"><ZoomIn size={14} /></button>
+                    <button className="yk-zoom-btn" style={{ fontSize: '9px', lineHeight: '9px', textAlign: 'center' }}>
+                       <span style={{ transform: 'scale(0.8)' }}>↖↗<br/>100%<br/>↙↘</span>
+                    </button>
+                    <button className="yk-zoom-btn"><ZoomOut size={14} /></button>
+                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px' }}>
-                 <button className="grid-button" style={{ padding: '2px', border: 'none', background: 'transparent' }}><ZoomIn size={14} /></button>
-                 <button className="grid-button" style={{ padding: '2px', border: 'none', background: 'transparent' }}><ZoomOut size={14} /></button>
-              </div>
-              <button className="btn-wide" style={{ marginTop: '8px' }}>Kursor off</button>
+              
+              <button className="yk-btn">Kursor off</button>
            </div>
 
-           <div className="panel-block">
-              <div className="panel-block-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                Menandai <label style={{ fontSize: '10px' }}><input type="checkbox" /> REF</label>
+           <div className="panel-section" style={{ borderBottom: 'none' }}>
+              <div className="yk-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Menandai</span>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                  <input type="checkbox" style={{ margin: 0 }} /> REF
+                </label>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
-                 <button className="grid-button">M1</button><button className="grid-button">Y1</button>
-                 <button className="grid-button">M2</button><button className="grid-button">Y2</button>
-                 <button className="grid-button">M3</button><button className="grid-button">Y3</button>
+              
+              <div className="yk-grid-2">
+                 <button className="yk-grid-btn">M1</button>
+                 <button className="yk-grid-btn">Y1</button>
+                 <button className="yk-grid-btn">M2</button>
+                 <button className="yk-grid-btn">Y2</button>
+                 <button className="yk-grid-btn">M3</button>
+                 <button className="yk-grid-btn">Y3</button>
               </div>
-              <button className="btn-wide" style={{ marginTop: '8px' }}>Hapus Penanda</button>
-              <label style={{ fontSize: '10px', color: '#999', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}><input type="checkbox" /> Tautan Kursor</label>
+              
+              <button className="yk-btn">Hapus Penanda</button>
            </div>
         </div>
 

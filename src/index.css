@@ -226,67 +226,129 @@ button {
 
 /* Control Panel Column */
 .control-panel {
-  width: 160px;
-  background-color: var(--yk-toolbar-bg);
+  width: 170px;
+  background-color: #e3e7eb; /* Soft native gray from screenshot */
   border-right: 1px solid var(--yk-border);
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  gap: 8px;
   overflow-y: auto;
 }
 
-.panel-block {
-  border: 1px solid var(--yk-toolbar-border);
-  padding: 8px;
-  background: var(--yk-panel-bg);
-  border-radius: 2px;
-}
-.panel-block-title {
-  font-size: 11px;
-  color: var(--yk-text-muted);
-  margin-bottom: 6px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 4px;
+.panel-section {
+  border-bottom: 1px solid #b9c1cb;
+  padding: 12px 14px;
 }
 
-.dpad-container {
+.yk-btn {
+  width: 100%;
+  padding: 6px;
+  background: #eff1f3;
+  border: 1px solid #cbd2d9;
+  color: #adb5bd;
+  font-size: 11px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.yk-section-title {
+  font-size: 11px;
+  color: #6c8093;
+  margin-bottom: 12px;
+}
+
+.yk-dpad-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.yk-dpad {
   position: relative;
   width: 80px;
   height: 80px;
-  margin: 10px auto;
 }
-.dpad-btn {
+
+.yk-cross-v {
   position: absolute;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  color: #666;
-  cursor: pointer;
+  width: 26px;
+  height: 80px;
+  left: 27px;
+  top: 0;
+  background: #f8f9fa;
+  border: 1.5px solid #848e98;
+  border-radius: 4px;
 }
-.dpad-btn:hover { background: #e0e0e0; }
-.dpad-up { top: 0; left: 25px; width: 30px; height: 30px; border-radius: 4px 4px 0 0; }
-.dpad-down { bottom: 0; left: 25px; width: 30px; height: 30px; border-radius: 0 0 4px 4px; }
-.dpad-left { top: 25px; left: 0; width: 30px; height: 30px; border-radius: 4px 0 0 4px; }
-.dpad-right { top: 25px; right: 0; width: 30px; height: 30px; border-radius: 0 4px 4px 0; }
 
-.grid-button {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  padding: 4px;
+.yk-cross-h {
+  position: absolute;
+  width: 80px;
+  height: 26px;
+  left: 0;
+  top: 27px;
+  background: #f8f9fa;
+  border: 1.5px solid #848e98;
+  border-radius: 4px;
+}
+
+.yk-cross-center {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  left: 28.5px;
+  top: 28.5px;
+  background: #f8f9fa;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yk-dpad-icon {
+  position: absolute;
+  font-weight: 900;
+  font-size: 18px;
+  color: #bdc3c7;
+  z-index: 3;
+  user-select: none;
+}
+.yk-dpad-icon.top { top: -2px; left: 33px; font-size: 18px; }
+.yk-dpad-icon.bottom { bottom: 3px; left: 34px; font-size: 20px; line-height: 10px; }
+.yk-dpad-icon.left { left: 8px; top: 26px; font-size: 20px; line-height: 10px; }
+.yk-dpad-icon.right { right: 7px; top: 26px; font-size: 18px; left: unset;}
+
+.yk-zoom-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.yk-zoom-btn {
+  width: 44px;
+  height: 24px;
+  background: transparent;
+  border: 1px solid #cbd2d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bdc3c7;
+  border-radius: 2px;
+}
+
+.yk-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.yk-grid-btn {
+  background: #eff1f3;
+  border: 1px solid #cbd2d9;
+  padding: 8px 4px;
   text-align: center;
-  font-size: 11px;
-  color: #888;
-  cursor: not-allowed;
-}
-
-.btn-wide {
-  width: 100%;
-  padding: 6px;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  color: #555;
-  font-size: 11px;
-  margin-bottom: 4px;
+  font-size: 12px;
+  color: #adb5bd;
+  border-radius: 2px;
 }
 
 /* Info Sidebar */
