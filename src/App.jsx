@@ -183,42 +183,47 @@ function App() {
 
   const handleTemplateInjection = async () => {
     try {
-      // 1. Fetch the embedded hidden template file from public folder
       const templateResponse = await fetch('/yokogawa.sor');
-      if (!templateResponse.ok) {
-         alert("File template 'yokogawa.sor' tidak ditemukan di folder public! Mohon letakkan satu contoh file bernama 'yokogawa.sor' di folder public Anda agar bisa dipakai permanen.");
-         return;
-      }
       const buffer = await templateResponse.arrayBuffer();
       const tempUint8 = new Uint8Array(buffer);
       
-      const fileName = window.prompt("Suntikan Biner Berhasil! Simpan dengan nama:", `AI_Yokogawa_${new Date().getTime()}`);
-      if (!fileName) return;
+      // Strict verification to prevent SPA HTML fallbacks
+      const isHTML = tempUint8[0] === 0x3C; // '<' character
+      const mapSig = [0x4D, 0x61, 0x70, 0x00]; // "Map\0"
+      let hasMapSig = true;
+      for (let i = 0; i < 4; i++) {
+         if (tempUint8[i] !== mapSig[i]) hasMapSig = false;
+      }
 
+      if (isHTML || !hasMapSig) {
+         alert("SERVER ERROR: File 'yokogawa.sor' belum terunggah ke Vercel! Mohon pastikan Anda sudah melakukan 'Git Push' setelah memasukkan file tersebut ke folder 'public/'.");
+         return;
+      }
+      
       // 2. Analyze with the parser
       const parsedTemplate = parseSor(tempUint8, 'yokogawa.sor');
 
-      // 3. We cannot use FileReader since it's already a buffer.
-      // We must bypass exportViaInjection which takes a File, and just do the extraction here:
+      // 3. Find DataPts block signature (The last occurrence is ALWAYS the block header)
       const dataPtsSig = [0x44, 0x61, 0x74, 0x61, 0x50, 0x74, 0x73, 0x00];
       let dataPtsOffset = -1;
-      let matchCount = 0;
       for (let i = 0; i < tempUint8.length - 8; i++) {
         let match = true;
         for (let j=0; j<8; j++) if(tempUint8[i+j] !== dataPtsSig[j]) { match = false; break; }
         if (match) {
-          matchCount++;
-          if (matchCount === 2) { dataPtsOffset = i; break; }
+          dataPtsOffset = i; // Always take the latest occurrence
         }
       }
       
-      if (dataPtsOffset === -1) throw new Error("Gagal menemukan struktur DataPts.");
+      if (dataPtsOffset === -1) throw new Error("File template tidak memilik blok DataPts standar Telcordia.");
       
       const view = new DataView(buffer);
       const blockSize = view.getInt32(dataPtsOffset + 10, true);
       const blockEndOffset = dataPtsOffset + blockSize;
       
       const bufferInfo = { uint8Array: tempUint8, dataPtsOffset, blockEndOffset };
+
+      const fileName = window.prompt("Proses Injeksi Biner Siap Dieksekusi! Simpan dengan nama file (opsional):", `AI_Yokogawa_${new Date().getTime()}`);
+      if (!fileName) return;
 
       // 4. Perform the memory surgical operation
       applyInjectionAndDownload(bufferInfo, parsedTemplate, traceData, fileName);
