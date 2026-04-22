@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Tool, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Activity, Wrench, CheckCircle, AlertTriangle } from 'lucide-react';
 
 export default function AIAnalysisForm({ events, isAnalyzing }) {
   const [analysisText, setAnalysisText] = useState([]);
@@ -84,7 +84,7 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
 
       <div className="form-section" style={{ background: '#f8f9fa', borderRadius: '8px', padding: '20px', borderLeft: '4px solid #27ae60', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
         <h3 style={{ color: '#27ae60', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '16px' }}>
-          <Tool size={18} /> B. Langkah Perbaikan Masalah :
+          <Wrench size={18} /> B. Langkah Perbaikan Masalah :
         </h3>
         <ul style={{ paddingLeft: '24px', margin: '12px 0 0 0', color: '#34495e', lineHeight: '1.6', fontSize: '14px' }}>
           {troubleshootingText.map((text, index) => (

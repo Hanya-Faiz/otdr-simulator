@@ -73,7 +73,7 @@ export const exportViaInjection = async (rawFile, aiTraceData) => {
         }
         
         let numPoints = 0;
-        const view = new DataView(buffer);
+        const viewFxd = new DataView(buffer);
         if (fxdOffset !== -1) {
             // FxdParams header: 10 bytes string, 2 bytes version, 4 bytes size.
             // Then date/time (4 bytes), units (2 bytes), wavelength (2 bytes)...
