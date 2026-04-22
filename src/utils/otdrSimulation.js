@@ -54,11 +54,15 @@ export const generateOTDRTrace = (
     let eLoss = eventLossMin + Math.random() * eventLossMax;
     let ref = null;
 
+    let normalProb = 0.25;
+    if (difficulty === 'Hard') normalProb = 0.45;
+    if (difficulty === 'Advanced') normalProb = 0.60;
+
     if (rType > 0.7) {
       eventType = 'connector';
       eLoss = 0.2 + Math.random() * 0.5;
       ref = -40 + Math.random() * 10;
-    } else if (rType < 0.25) {
+    } else if (rType < normalProb) {
       // Fake event / No Anomaly
       eventType = 'normal';
       eLoss = Math.random() * 0.02; // extremely tiny or zero

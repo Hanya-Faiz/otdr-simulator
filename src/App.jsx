@@ -8,6 +8,7 @@ import OTDRChart from './components/OTDRChart';
 import Sidebar from './components/Sidebar';
 import EventQuizTable from './components/EventQuizTable';
 import EventDiagram from './components/EventDiagram';
+import AIAnalysisForm from './components/AIAnalysisForm';
 
 function App() {
   const [traceData, setTraceData] = useState([]);
@@ -446,6 +447,7 @@ function App() {
          <div className="bottom-tabs">
             <div className={`bottom-tab ${activeBottomTab === 'quiz' ? 'active' : ''}`} onClick={() => setActiveBottomTab('quiz')}>Daftar Kejadian</div>
             <div className={`bottom-tab ${activeBottomTab === 'gambar' ? 'active' : ''}`} onClick={() => setActiveBottomTab('gambar')}>Gambar Kejadian</div>
+            <div className={`bottom-tab ${activeBottomTab === 'ai_analisis' ? 'active' : ''}`} onClick={() => setActiveBottomTab('ai_analisis')}>AI Analisis Masalah</div>
             
             {events.length > 0 && !showResults && activeBottomTab === 'quiz' && (
               <button 
@@ -462,7 +464,7 @@ function App() {
             )}
          </div>
          <div className="bottom-content">
-            {activeBottomTab === 'quiz' ? (
+            {activeBottomTab === 'quiz' && (
                <EventQuizTable 
                  events={events}
                  userAnswers={userAnswers}
@@ -470,8 +472,12 @@ function App() {
                  showResults={showResults}
                  isAnalyzing={isAnalyzing}
                />
-            ) : (
+            )}
+            {activeBottomTab === 'gambar' && (
                <EventDiagram events={events} distanceRange={sidebarData.distanceRange} />
+            )}
+            {activeBottomTab === 'ai_analisis' && (
+               <AIAnalysisForm events={events} isAnalyzing={isAnalyzing} />
             )}
          </div>
       </div>
