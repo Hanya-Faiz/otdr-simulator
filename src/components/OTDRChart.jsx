@@ -146,40 +146,55 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
 
   const handleKeyDown = (e) => {
     if (!chartRef.current) return;
-    
-    // Define pan speed in pixels
-    const panAmount = 50; 
-    let dx = 0;
-    let dy = 0;
+
+    const chart = chartRef.current;
+    const STEP_KM = 0.0001; // Pan step: exactly 0.0001 km per keypress
+    const STEP_DB = 0.05;   // Y-axis pan step per keypress
+
+    const xScale = chart.scales.x;
+    const yScale = chart.scales.y;
+
+    let newXMin = xScale.min;
+    let newXMax = xScale.max;
+    let newYMin = yScale.min;
+    let newYMax = yScale.max;
 
     switch(e.key) {
       case 'ArrowLeft':
       case 'a':
       case 'A':
-        dx = panAmount; // Move view left
+        newXMin -= STEP_KM;
+        newXMax -= STEP_KM;
         break;
       case 'ArrowRight':
       case 'd':
       case 'D':
-        dx = -panAmount; // Move view right
+        newXMin += STEP_KM;
+        newXMax += STEP_KM;
         break;
       case 'ArrowUp':
       case 'w':
       case 'W':
-        dy = panAmount; // Move view up
+        newYMin += STEP_DB;
+        newYMax += STEP_DB;
         break;
       case 'ArrowDown':
       case 's':
       case 'S':
-        dy = -panAmount; // Move view down
+        newYMin -= STEP_DB;
+        newYMax -= STEP_DB;
         break;
       default:
         return;
     }
 
-    // Prevent default scrolling for these keys
     e.preventDefault();
-    chartRef.current.pan({ x: dx, y: dy });
+
+    chart.options.scales.x.min = newXMin;
+    chart.options.scales.x.max = newXMax;
+    chart.options.scales.y.min = newYMin;
+    chart.options.scales.y.max = newYMax;
+    chart.update('none');
   };
 
   return (
