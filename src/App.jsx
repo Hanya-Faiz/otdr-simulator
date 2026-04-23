@@ -885,8 +885,11 @@ function App() {
                 <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Standar Teknis PT Telkom Indonesia (FTTH)</div>
 
                 {/* Attenuation Table */}
-                <div style={{ marginBottom: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>📡 Standar Redaman Kabel (Fiber Attenuation)</div>
+                <div style={{ marginBottom: '16px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '4px' }}>Standar Redaman Kabel (Fiber Attenuation)</div>
+                  <div style={{ fontSize: '11px', color: '#78909c', marginBottom: '8px', fontStyle: 'italic' }}>
+                    Analogi: Bayangkan kabel fiber seperti selang air. Semakin panjang selang, semakin banyak air yang bocor/hilang di tengah jalan sebelum sampai ke ujung. Nah, "redaman per km" adalah ukuran seberapa banyak sinyal cahaya yang bocor/melemah untuk setiap 1 kilometer panjang kabel.
+                  </div>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', border: '1px solid #cfd8dc' }}>
                     <thead><tr style={{ background: '#eceff1' }}>
                       <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Panjang Gelombang</th>
@@ -895,9 +898,9 @@ function App() {
                     </tr></thead>
                     <tbody>
                       {[
-                        ['1310 nm', '≤ 0.35 dB/km', 'Single Mode (O-Band). Digunakan untuk jarak menengah.'],
-                        ['1550 nm', '≤ 0.22 dB/km', 'Single Mode (C-Band). Standar utama jaringan FTTH Telkom.'],
-                        ['1625 nm', '≤ 0.22 dB/km', 'Single Mode (L-Band). Untuk monitoring tanpa gangguan live traffic.'],
+                        ['1310 nm', '≤ 0.35 dB/km', 'Single Mode (O-Band). Umumnya untuk jarak menengah & perangkat lama.'],
+                        ['1550 nm', '≤ 0.22 dB/km', 'Single Mode (C-Band). Standar utama FTTH Telkom, paling efisien.'],
+                        ['1625 nm', '≤ 0.22 dB/km', 'Single Mode (L-Band). Untuk monitoring jaringan aktif tanpa putus layanan.'],
                       ].map(([wav, att, note], i) => (
                         <tr key={i} style={{ borderBottom: '1px solid #eceff1', background: i % 2 === 0 ? '#fff' : '#f9f9f9' }}>
                           <td style={{ padding: '7px 10px', fontWeight: '600', color: '#1976d2' }}>{wav}</td>
@@ -910,8 +913,11 @@ function App() {
                 </div>
 
                 {/* Event Loss Table */}
-                <div style={{ marginBottom: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>⚡ Standar Redaman per Titik Kejadian (Event Loss)</div>
+                <div style={{ marginBottom: '16px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '4px' }}>Standar Redaman per Titik Kejadian (Event Loss)</div>
+                  <div style={{ fontSize: '11px', color: '#78909c', marginBottom: '8px', fontStyle: 'italic' }}>
+                    Analogi: Selain panjang selang, air juga bisa hilang di titik sambungan atau tikungan. Seperti itu pula sinyal cahaya di fiber — setiap kali ada sambungan (splice), konektor, atau tekukan tajam, ada sinyal yang "tercecer". Batas toleransi Telkom memastikan "ceceran" itu tidak terlalu banyak.
+                  </div>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', border: '1px solid #cfd8dc' }}>
                     <thead><tr style={{ background: '#eceff1' }}>
                       <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Tipe Kejadian</th>
@@ -920,9 +926,9 @@ function App() {
                     </tr></thead>
                     <tbody>
                       {[
-                        ['Splice / Sambungan (Fusion)', '≤ 0.10 dB', 'Lakukan splicing ulang dengan mesin yang terkalibrasi.'],
-                        ['Connector / Konektor', '≤ 0.50 dB', 'Bersihkan ujung konektor atau ganti dengan pigtail baru.'],
-                        ['Macrobending / Tekukan', '≤ 0.10 dB', 'Luruskan jalur kabel, pastikan radius lentur ≥ 30 mm.'],
+                        ['Splice / Sambungan (Fusion)', '≤ 0.10 dB', 'Lakukan splicing ulang dengan mesin terkalibrasi.'],
+                        ['Connector / Konektor', '≤ 0.50 dB', 'Bersihkan ujung konektor atau ganti pigtail baru.'],
+                        ['Macrobending / Tekukan', '≤ 0.10 dB', 'Luruskan jalur kabel, radius lentur minimal 30 mm.'],
                       ].map(([type, limit, action], i) => (
                         <tr key={i} style={{ borderBottom: '1px solid #eceff1', background: i % 2 === 0 ? '#fff' : '#f9f9f9' }}>
                           <td style={{ padding: '7px 10px', color: '#37474f' }}>{type}</td>
@@ -935,8 +941,11 @@ function App() {
                 </div>
 
                 {/* Link Budget Box */}
-                <div style={{ marginBottom: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>🔗 Standar Link Budget & Rx Power (FTTH OLT → ONT)</div>
+                <div style={{ marginBottom: '16px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '4px' }}>Standar Link Budget & Rx Power (FTTH OLT ke ONT)</div>
+                  <div style={{ fontSize: '11px', color: '#78909c', marginBottom: '8px', fontStyle: 'italic' }}>
+                    Analogi: Bayangkan Telkom (OLT) seperti menara air yang memompa air ke rumah kamu (ONT/modem). Semakin jauh dan banyak tikungan pipanya, semakin lemah tekanan air di ujung. "Tx Power" adalah kekuatan pompa awal, "Total Loss" adalah berapa banyak yang hilang di jalan, dan "Rx Power" adalah tekanan air yang kamu terima. Jika terlalu lemah, koneksi putus. Jika terlalu kencang, pipa bisa rusak.
+                  </div>
                   <div style={{ background: '#f3e5f5', border: '1px solid #ce93d8', borderRadius: '4px', padding: '12px', fontSize: '12px', color: '#4a148c' }}>
                     <div style={{ marginBottom: '8px' }}><strong>Rumus Dasar:</strong> <code style={{ background: '#ede7f6', padding: '2px 6px', borderRadius: '3px' }}>Rx Power (dBm) = Tx Power OLT − Total Loss (dB)</code></div>
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '4px' }}>
@@ -956,17 +965,24 @@ function App() {
                       </tbody>
                     </table>
                     <div style={{ marginTop: '8px', fontSize: '11px', fontStyle: 'italic' }}>
-                      * Jika Rx Power &lt; −27 dBm → pelanggan berisiko LOS (lampu merah). Jika &gt; −13 dBm → gunakan attenuator agar receiver ONT tidak rusak.
+                      * Jika Rx Power kurang dari −27 dBm, pelanggan berisiko mengalami LOS (indikator merah pada modem). Jika lebih dari −13 dBm, gunakan attenuator agar perangkat ONT tidak rusak akibat sinyal terlalu kuat.
                     </div>
                   </div>
                 </div>
 
                 {/* dB vs dBm */}
                 <div>
-                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>📖 Perbedaan Satuan: dB vs dBm</div>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '4px' }}>Perbedaan Satuan: dB vs dBm</div>
+                  <div style={{ fontSize: '11px', color: '#78909c', marginBottom: '8px', fontStyle: 'italic' }}>
+                    Analogi: Bayangkan kamu sedang bicara di lapangan terbuka. Kalau kamu berteriak dan suaramu berkurang 50% setelah 100 meter, penurunannya bisa dinyatakan dalam dB (relatif). Tapi untuk mengatakan seberapa keras suaramu saat ini secara mutlak (misalnya 80 desibel), kamu butuh satuan absolut. dBm bekerja seperti itu — ia mengukur "seberapa keras" sinyal cahaya sesungguhnya, bukan hanya "berapa yang hilang".
+                  </div>
                   <div style={{ background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '4px', padding: '12px', fontSize: '12px', color: '#1b5e20' }}>
-                    <p style={{ margin: '0 0 8px 0' }}><strong>dB (Decibel)</strong> — Satuan <em>rasio relatif</em>. Dipakai untuk menyatakan besaran redaman/kerugian sinyal sepanjang jalur. Selalu positif di OTDR (contoh: splice loss 0.08 dB, total loss 18.5 dB).</p>
-                    <p style={{ margin: 0 }}><strong>dBm (Decibel-milliwatt)</strong> — Satuan <em>daya optik absolut</em> relatif terhadap 1 mW. Digunakan untuk mengukur kekuatan sinyal aktual yang diterima perangkat. Nilai 0 dBm = 1 mW; nilai negatif berarti daya di bawah 1 mW (contoh: Rx Power −21 dBm ≈ 0.0079 mW — masih aman).</p>
+                    <p style={{ margin: '0 0 10px 0' }}>
+                      <strong>dB (Decibel)</strong> — Satuan kerugian/redaman yang bersifat relatif. Dipakai untuk menghitung berapa banyak sinyal yang hilang sepanjang kabel atau di titik sambungan. Nilainya selalu positif di OTDR, contoh: splice loss 0.08 dB atau total loss 18.5 dB.
+                    </p>
+                    <p style={{ margin: 0 }}>
+                      <strong>dBm (Decibel-milliwatt)</strong> — Satuan kekuatan sinyal optik yang sesungguhnya, diukur dari 0 dBm (= 1 mW). Nilai negatif artinya sinyal sudah melemah di bawah 1 mW. Contoh: Rx Power −21 dBm artinya daya yang diterima modem Anda hanya sekitar 0.008 mW — kecil, tapi masih cukup untuk mengalirkan internet jika berada di rentang aman Telkom (−13 s.d. −27 dBm).
+                    </p>
                   </div>
                 </div>
               </div>
