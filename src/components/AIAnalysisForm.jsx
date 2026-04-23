@@ -63,30 +63,27 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
   }
 
   return (
-    <div className="ai-analysis-container" style={{ padding: '24px 32px', background: '#f9fafb', height: '100%', overflowY: 'auto', fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
-      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e5e7eb', paddingBottom: '16px' }}>
-        <div>
-          <h2 style={{ color: '#111827', margin: '0 0 4px 0', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600' }}>
-            <Activity size={20} color="#2563eb" /> Laporan Analisis AI
-          </h2>
-          <p style={{ color: '#6b7280', margin: 0, fontSize: '12px' }}>Dihasilkan secara otomatis dari data jejak simulasi.</p>
-        </div>
-        <div style={{ fontSize: '12px', color: '#6b7280', background: '#e0e7ff', padding: '4px 12px', borderRadius: '16px', fontWeight: '500', color: '#4338ca' }}>
-          Status: Selesai
+    <div className="table-container" style={{ width: '100%', height: '100%', overflow: 'auto', background: '#fff' }}>
+      <div style={{ padding: '16px', borderBottom: '1px solid #cfd8dc', background: '#f5f6f7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h2 style={{ color: '#263238', margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+          <Activity size={16} color="#1976d2" /> Laporan Analisis AI
+        </h2>
+        <div style={{ fontSize: '11px', color: '#546e7a' }}>
+          Digenerasi secara otomatis berdasarkan pembacaan jejak simulator
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', minHeight: 'calc(100% - 85px)' }}>
         {/* Section A: Analisa Masalah */}
-        <div className="form-section" style={{ background: '#ffffff', borderRadius: '6px', border: '1px solid #e5e7eb', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', overflow: 'hidden' }}>
-          <div style={{ background: '#f8fafc', padding: '12px 20px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '8px' }}>
-             <AlertTriangle size={16} color="#d97706" />
-             <h3 style={{ color: '#334155', margin: 0, fontSize: '14px', fontWeight: '600' }}>
+        <div style={{ flex: 1, borderRight: '1px solid #cfd8dc', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ background: '#f9f9f9', padding: '10px 16px', borderBottom: '1px solid #cfd8dc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <AlertTriangle size={14} color="#d97706" />
+             <h3 style={{ color: '#263238', margin: 0, fontSize: '13px', fontWeight: 'bold' }}>
                A. Analisa Masalah
              </h3>
           </div>
-          <div style={{ padding: '16px 20px' }}>
-            <ul style={{ paddingLeft: '20px', margin: 0, color: '#475569', lineHeight: '1.6', fontSize: '13px' }}>
+          <div style={{ padding: '16px', flex: 1, background: '#fff' }}>
+            <ul style={{ paddingLeft: '20px', margin: 0, color: '#37474f', lineHeight: '1.6', fontSize: '12px' }}>
               {analysisText.map((text, index) => (
                 <li key={index} style={{ marginBottom: index === analysisText.length - 1 ? 0 : '8px' }}>{text}</li>
               ))}
@@ -95,15 +92,15 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
         </div>
 
         {/* Section B: Langkah Perbaikan */}
-        <div className="form-section" style={{ background: '#ffffff', borderRadius: '6px', border: '1px solid #e5e7eb', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', overflow: 'hidden' }}>
-          <div style={{ background: '#f8fafc', padding: '12px 20px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '8px' }}>
-             <Wrench size={16} color="#059669" />
-             <h3 style={{ color: '#334155', margin: 0, fontSize: '14px', fontWeight: '600' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ background: '#f9f9f9', padding: '10px 16px', borderBottom: '1px solid #cfd8dc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <Wrench size={14} color="#059669" />
+             <h3 style={{ color: '#263238', margin: 0, fontSize: '13px', fontWeight: 'bold' }}>
                B. Langkah Perbaikan Masalah
              </h3>
           </div>
-          <div style={{ padding: '16px 20px' }}>
-            <ul style={{ paddingLeft: '20px', margin: 0, color: '#475569', lineHeight: '1.6', fontSize: '13px' }}>
+          <div style={{ padding: '16px', flex: 1, background: '#fff' }}>
+            <ul style={{ paddingLeft: '20px', margin: 0, color: '#37474f', lineHeight: '1.6', fontSize: '12px' }}>
               {troubleshootingText.map((text, index) => (
                 <li key={index} style={{ marginBottom: index === troubleshootingText.length - 1 ? 0 : '8px' }}>{text}</li>
               ))}
@@ -112,7 +109,7 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
         </div>
       </div>
       
-      <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'space-between', color: '#9ca3af', fontSize: '11px', fontWeight: '500' }}>
+      <div style={{ padding: '8px 16px', borderTop: '1px solid #cfd8dc', display: 'flex', justifyContent: 'space-between', color: '#90a4ae', fontSize: '10px', background: '#f5f6f7' }}>
          <span>System: OTDR Simulator Engine v2.0</span>
          <span>Generated: {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
       </div>
