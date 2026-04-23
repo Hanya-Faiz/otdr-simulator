@@ -201,15 +201,6 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
           </div>
 
         </div>
-
-        <div style={{ marginTop: '24px', padding: '12px', background: '#e3f2fd', border: '1px solid #90caf9', borderRadius: '4px', fontSize: '12px', color: '#0d47a1' }}>
-          <strong>💡 Panduan Cara Mengisi Form:</strong>
-          <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
-            <li><strong>A. Jarak Kabel:</strong> Merupakan jarak letak kejadian <strong>Ujung Kabel (End of Fiber)</strong> yang terbaca pada grafik (bisa dicocokkan dengan parameter "Jarak Total" di panel kanan).</li>
-            <li><strong>B. Redaman /Km:</strong> Merupakan nilai redaman fiber optic standar per kilometer. Biasanya berada di sekitar angka <strong>0.200</strong> dB/km.</li>
-            <li><strong>C. Total Loss:</strong> Merupakan total kumulatif redaman dari seluruh jalur yang diukur (biasanya bisa disalin langsung dari parameter "Total Redaman" di panel informasi sebelah kanan).</li>
-          </ul>
-        </div>
       </div>
     </div>
   );

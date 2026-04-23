@@ -867,6 +867,19 @@ function App() {
                 </table>
               </div>
 
+              {/* Panduan Form Kuis */}
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Panduan Cara Mengisi Form Kuis</div>
+                <div style={{ padding: '12px', background: '#e3f2fd', border: '1px solid #90caf9', borderRadius: '4px', fontSize: '12px', color: '#0d47a1' }}>
+                  <strong>💡 Cara Menentukan Parameter Kuis:</strong>
+                  <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+                    <li><strong>A. Jarak Kabel:</strong> Merupakan jarak letak kejadian <strong>Ujung Kabel (End of Fiber)</strong> yang terbaca pada grafik (bisa dicocokkan dengan parameter "Jarak Total" di panel kanan).</li>
+                    <li><strong>B. Redaman /Km:</strong> Merupakan nilai redaman fiber optic standar per kilometer. Biasanya berada di sekitar angka <strong>0.200</strong> dB/km.</li>
+                    <li><strong>C. Total Loss:</strong> Merupakan total kumulatif redaman dari seluruh jalur yang diukur (biasanya bisa disalin langsung dari parameter "Total Redaman" di panel informasi sebelah kanan).</li>
+                  </ul>
+                </div>
+              </div>
+
               {/* Difficulty Levels */}
               <div>
                 <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Simulation Difficulty Levels</div>
