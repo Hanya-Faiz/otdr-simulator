@@ -78,7 +78,7 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
         },
         pan: {
           enabled: true,
-          mode: 'x',
+          mode: 'xy',
           modifierKey: null,
         },
         zoom: {
@@ -89,7 +89,7 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
           pinch: {
             enabled: true
           },
-          mode: 'x',
+          mode: 'xy',
         }
       },
       tooltip: {
@@ -144,8 +144,50 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (!chartRef.current) return;
+    
+    // Define pan speed in pixels
+    const panAmount = 50; 
+    let dx = 0;
+    let dy = 0;
+
+    switch(e.key) {
+      case 'ArrowLeft':
+      case 'a':
+      case 'A':
+        dx = panAmount; // Move view left
+        break;
+      case 'ArrowRight':
+      case 'd':
+      case 'D':
+        dx = -panAmount; // Move view right
+        break;
+      case 'ArrowUp':
+      case 'w':
+      case 'W':
+        dy = panAmount; // Move view up
+        break;
+      case 'ArrowDown':
+      case 's':
+      case 'S':
+        dy = -panAmount; // Move view down
+        break;
+      default:
+        return;
+    }
+
+    // Prevent default scrolling for these keys
+    e.preventDefault();
+    chartRef.current.pan({ x: dx, y: dy });
+  };
+
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div 
+      style={{ position: 'relative', width: '100%', height: '100%', outline: 'none' }} 
+      tabIndex={0} 
+      onKeyDown={handleKeyDown}
+    >
       <button 
         onClick={handleResetZoom}
         style={{
