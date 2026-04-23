@@ -45,7 +45,7 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
   // Calculated True Values for Extra Form
   const endEvent = events.find(e => e.type === 'end') || events[events.length - 1];
   const trueJarakKabel = endEvent ? endEvent.distance.toFixed(4) : '';
-  const trueRedamanKm = '0.200'; // Base simulation attenuation
+  const trueRedamanKm = (sidebarData && sidebarData.wavelength && sidebarData.wavelength.includes('1310')) ? '0.350' : '0.220';
   const trueTotalLoss = sidebarData && sidebarData.totalLoss ? sidebarData.totalLoss.toFixed(3) : '';
 
   const checkExtraAnswer = (field, trueValue) => {

@@ -5,8 +5,13 @@ export const generateOTDRTrace = (
   totalDistance = 30.0,
   dataPoints = 12501,
   startPower = 35.0,
-  attenuationPerKm = 0.22 // Standar PT Telkom untuk 1550nm
+  wavelengthString = '1550 nm SM'
 ) => {
+  let attenuationPerKm = 0.22; // Standar Telkom 1550nm/1625nm
+  if (wavelengthString && wavelengthString.includes('1310')) {
+    attenuationPerKm = 0.35; // Standar Telkom 1310nm
+  }
+
   const points = [];
   const events = [];
   const dzLength = 0.1; // km dead zone

@@ -71,7 +71,7 @@ function App() {
     const randDur = durChoices[Math.floor(Math.random() * durChoices.length)];
     const ior = (1.46500 + Math.random() * 0.00500).toFixed(5);
     
-    const { trace, events: genEvents } = generateOTDRTrace(difficulty, randDist, randPts);
+    const { trace, events: genEvents } = generateOTDRTrace(difficulty, randDist, randPts, 35.0, randWav);
     setTraceData(trace);
     setEvents(genEvents);
     const endEvent = genEvents.find(e => e.type === 'end') || genEvents[genEvents.length - 1];
@@ -874,7 +874,7 @@ function App() {
                   <strong>💡 Cara Menentukan Parameter Kuis:</strong>
                   <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
                     <li><strong>A. Jarak Kabel:</strong> Merupakan jarak letak kejadian <strong>Ujung Kabel (End of Fiber)</strong> yang terbaca pada grafik (bisa dicocokkan dengan parameter "Jarak Total" di panel kanan).</li>
-                    <li><strong>B. Redaman /Km:</strong> Merupakan nilai redaman fiber optic standar per kilometer. Biasanya berada di sekitar angka <strong>0.200</strong> dB/km.</li>
+                    <li><strong>B. Redaman /Km:</strong> Standar redaman kabel per kilometer. Nilainya <strong>0.35 dB/km</strong> (untuk 1310nm) dan <strong>0.22 dB/km</strong> (untuk 1550nm/1625nm). Periksa panjang gelombang yang sedang digunakan di panel "Kondisi Pengukuran".</li>
                     <li><strong>C. Total Loss:</strong> Merupakan total kumulatif redaman dari seluruh jalur yang diukur (biasanya bisa disalin langsung dari parameter "Total Redaman" di panel informasi sebelah kanan).</li>
                   </ul>
                 </div>
