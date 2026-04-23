@@ -471,6 +471,7 @@ function App() {
                  onAnswerChange={handleAnswerChange}
                  showResults={showResults}
                  isAnalyzing={isAnalyzing}
+                 sidebarData={sidebarData}
                />
             )}
             {activeBottomTab === 'gambar' && (
