@@ -32,38 +32,7 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
   React.useEffect(() => {
     if (chartRef.current) {
       chartRef.current.options.plugins.annotation = {
-        annotations: showCursors ? {
-          cursorA: {
-            type: 'line',
-            scaleID: 'x',
-            value: cursorA,
-            borderColor: '#e53935',
-            borderWidth: 2,
-            borderDash: [5, 5],
-            label: { display: true, content: 'A', position: '15%', backgroundColor: '#e53935', color: '#fff', font: { size: 11, weight: 'bold' }, borderRadius: 4, padding: 6, yAdjust: 0 },
-            enter(ctx) { ctx.chart.canvas.style.cursor = 'ew-resize'; },
-            leave(ctx) { ctx.chart.canvas.style.cursor = 'default'; },
-            draggable: true,
-            onDrag: function(context, event) {
-              if (onCursorChange) onCursorChange('A', context.element.options.value);
-            }
-          },
-          cursorB: {
-            type: 'line',
-            scaleID: 'x',
-            value: cursorB,
-            borderColor: '#1e88e5',
-            borderWidth: 2,
-            borderDash: [5, 5],
-            label: { display: true, content: 'B', position: '15%', backgroundColor: '#1e88e5', color: '#fff', font: { size: 11, weight: 'bold' }, borderRadius: 4, padding: 6, yAdjust: 0 },
-            enter(ctx) { ctx.chart.canvas.style.cursor = 'ew-resize'; },
-            leave(ctx) { ctx.chart.canvas.style.cursor = 'default'; },
-            draggable: true,
-            onDrag: function(context, event) {
-              if (onCursorChange) onCursorChange('B', context.element.options.value);
-            }
-          }
-        } : {}
+        annotations: {}
       };
       chartRef.current.update('none');
     }

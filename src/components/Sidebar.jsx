@@ -72,33 +72,6 @@ export default function Sidebar({ sidebarData, cursorData }) {
           </div>
         </div>
 
-        {/* Since we removed the Marker tab from bottom, we put Cursor calc here like the screenshot's 'Menandai' sidebar block */}
-        {cursorData && (
-          <div>
-            <div className="info-section-title">Menandai A-B</div>
-            
-            <div className="info-row">
-              <div className="info-label" style={{ color: '#e53935' }}>Kursor A</div>
-              <div className="info-value">{cursorData.A.x.toFixed(4)} km / {cursorData.A.y.toFixed(3)} dB</div>
-            </div>
-
-            <div className="info-row">
-              <div className="info-label" style={{ color: '#1e88e5' }}>Kursor B</div>
-              <div className="info-value">{cursorData.B.x.toFixed(4)} km / {cursorData.B.y.toFixed(3)} dB</div>
-            </div>
-            
-            <div className="info-row" style={{ marginTop: '8px' }}>
-              <div className="info-label" style={{ fontWeight: 'bold' }}>Jarak (A-B)</div>
-              <div className="info-value" style={{ fontWeight: 'bold' }}>{Math.abs(cursorData.B.x - cursorData.A.x).toFixed(4)} km</div>
-            </div>
-
-            <div className="info-row">
-              <div className="info-label" style={{ fontWeight: 'bold' }}>Redaman 2-Point</div>
-              <div className="info-value" style={{ fontWeight: 'bold' }}>{Math.abs(cursorData.B.y - cursorData.A.y).toFixed(3)} dB</div>
-            </div>
-          </div>
-        )}
-
           </div>
       </div>
     </div>
