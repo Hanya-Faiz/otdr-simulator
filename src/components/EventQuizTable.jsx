@@ -105,6 +105,48 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
           })}
         </tbody>
       </table>
+      
+      {/* Form Tambahan: Penilaian Total Jarak & Redaman */}
+      <div style={{ marginTop: '24px', padding: '16px', borderTop: '2px dashed #cfd8dc', background: '#fafafa' }}>
+        <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#263238' }}>
+          3. Tentukan Total Jarak kabel keseluruhan Real dan Redaman /km (Bila Muncul pada OTDR) dan Total Loss/Redaman pada jaringan yang di ukur ?
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>A. (Jarak Kabel)</span>
+            <input 
+              type="text" 
+              placeholder="......................................................................"
+              value={userAnswers['jarakKabel'] || ''}
+              onChange={(e) => onAnswerChange('jarakKabel', e.target.value)}
+              disabled={showResults}
+              style={{ flex: 1, padding: '6px', border: 'none', borderBottom: '1px dotted #999', background: 'transparent', outline: 'none' }}
+            />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>B. (Redaman /Km)</span>
+            <input 
+              type="text" 
+              placeholder="......................................................................"
+              value={userAnswers['redamanKm'] || ''}
+              onChange={(e) => onAnswerChange('redamanKm', e.target.value)}
+              disabled={showResults}
+              style={{ flex: 1, padding: '6px', border: 'none', borderBottom: '1px dotted #999', background: 'transparent', outline: 'none' }}
+            />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>C. (Total Loss)</span>
+            <input 
+              type="text" 
+              placeholder="......................................................................"
+              value={userAnswers['totalLoss'] || ''}
+              onChange={(e) => onAnswerChange('totalLoss', e.target.value)}
+              disabled={showResults}
+              style={{ flex: 1, padding: '6px', border: 'none', borderBottom: '1px dotted #999', background: 'transparent', outline: 'none' }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
