@@ -74,10 +74,14 @@ function App() {
     const { trace, events: genEvents } = generateOTDRTrace(difficulty, randDist, randPts);
     setTraceData(trace);
     setEvents(genEvents);
+    const endEvent = genEvents.find(e => e.type === 'end') || genEvents[genEvents.length - 1];
+    const realTotalDist = endEvent ? endEvent.distance : randDist;
+
     setSidebarData({
       distanceRange: randDist,
+      realTotalDistance: realTotalDist,
       dataPoints: randPts,
-      totalLoss: genEvents.reduce((acc, ev) => acc + (ev.loss || 0), 0) + (randDist * 0.2),
+      totalLoss: genEvents.reduce((acc, ev) => acc + (ev.loss || 0), 0) + (realTotalDist * 0.2),
       pulseWidth: randPw,
       wavelength: randWav,
       duration: randDur,
@@ -165,9 +169,12 @@ function App() {
       }
       
       // Map sidebar
+      const endEvent = parsedEvents.find(e => e.type === 'end') || parsedEvents[parsedEvents.length - 1];
       const lastPointX = newTraceData.length > 0 ? newTraceData[newTraceData.length-1].x : 30;
+      
       setSidebarData({
         distanceRange: result.FxdParams?.range || lastPointX,
+        realTotalDistance: endEvent ? endEvent.distance : lastPointX,
         dataPoints: result.FxdParams?.["num data points"] || newTraceData.length,
         totalLoss: result.KeyEvents?.Summary?.["total loss"] || 0
       });

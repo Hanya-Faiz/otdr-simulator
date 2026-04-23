@@ -128,14 +128,14 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
       </table>
       
       {/* Form Tambahan: Penilaian Total Jarak & Redaman */}
-      <div style={{ marginTop: '24px', padding: '16px', borderTop: '2px dashed #cfd8dc', background: '#fafafa' }}>
-        <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#263238' }}>
-          3. Tentukan Total Jarak kabel keseluruhan Real dan Redaman /km (Bila Muncul pada OTDR) dan Total Loss/Redaman pada jaringan yang di ukur ?
-        </h3>
+      <div style={{ marginTop: '32px', padding: '0 16px', color: '#263238', fontSize: '13px' }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '16px' }}>
+          Tentukan Total Jarak kabel keseluruhan Real dan Redaman /km (Bila Muncul pada OTDR) dan Total Loss/Redaman pada jaringan yang di ukur ?
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '8px' }}>
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>A. (Jarak Kabel)</span>
+            <span style={{ width: '160px', fontWeight: 'bold' }}>A. (Jarak Kabel)</span>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
               <input 
                 type="number" 
@@ -144,18 +144,20 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
                 value={userAnswers['jarakKabel'] || ''}
                 onChange={(e) => onAnswerChange('jarakKabel', e.target.value)}
                 disabled={showResults}
-                style={{ width: '200px', padding: '6px 10px', border: '1px solid #b0bec5', borderRadius: '4px', outline: 'none' }}
+                style={{ width: '220px', padding: '5px 8px', border: '1px solid #cfd8dc', borderRadius: '3px', outline: 'none', color: '#263238' }}
               />
               {showResults && (
                  <span style={{ color: checkExtraAnswer('jarakKabel', trueJarakKabel) ? '#2e7d32' : '#c62828', fontWeight: 'bold' }}>
-                   {checkExtraAnswer('jarakKabel', trueJarakKabel) ? '✅ Benar' : `❌ Salah (Jawaban: ${trueJarakKabel} km)`}
+                   {checkExtraAnswer('jarakKabel', trueJarakKabel) 
+                     ? '✅ Benar' 
+                     : `❌ Salah (Jawaban: ${trueJarakKabel} km)`}
                  </span>
               )}
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>B. (Redaman /Km)</span>
+            <span style={{ width: '160px', fontWeight: 'bold' }}>B. (Redaman /Km)</span>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
               <input 
                 type="number" 
@@ -164,18 +166,20 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
                 value={userAnswers['redamanKm'] || ''}
                 onChange={(e) => onAnswerChange('redamanKm', e.target.value)}
                 disabled={showResults}
-                style={{ width: '200px', padding: '6px 10px', border: '1px solid #b0bec5', borderRadius: '4px', outline: 'none' }}
+                style={{ width: '220px', padding: '5px 8px', border: '1px solid #cfd8dc', borderRadius: '3px', outline: 'none', color: '#263238' }}
               />
               {showResults && (
                  <span style={{ color: checkExtraAnswer('redamanKm', trueRedamanKm) ? '#2e7d32' : '#c62828', fontWeight: 'bold' }}>
-                   {checkExtraAnswer('redamanKm', trueRedamanKm) ? '✅ Benar' : `❌ Salah (Jawaban: ${trueRedamanKm} dB/km)`}
+                   {checkExtraAnswer('redamanKm', trueRedamanKm) 
+                     ? '✅ Benar' 
+                     : `❌ Salah (Jawaban: ${trueRedamanKm} dB/km)`}
                  </span>
               )}
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ width: '160px', fontWeight: 'bold', color: '#37474f' }}>C. (Total Loss)</span>
+            <span style={{ width: '160px', fontWeight: 'bold' }}>C. (Total Loss)</span>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
               <input 
                 type="number" 
@@ -184,16 +188,27 @@ export default function EventQuizTable({ events, userAnswers, onAnswerChange, sh
                 value={userAnswers['totalLoss'] || ''}
                 onChange={(e) => onAnswerChange('totalLoss', e.target.value)}
                 disabled={showResults}
-                style={{ width: '200px', padding: '6px 10px', border: '1px solid #b0bec5', borderRadius: '4px', outline: 'none' }}
+                style={{ width: '220px', padding: '5px 8px', border: '1px solid #cfd8dc', borderRadius: '3px', outline: 'none', color: '#263238' }}
               />
               {showResults && (
                  <span style={{ color: checkExtraAnswer('totalLoss', trueTotalLoss) ? '#2e7d32' : '#c62828', fontWeight: 'bold' }}>
-                   {checkExtraAnswer('totalLoss', trueTotalLoss) ? '✅ Benar' : `❌ Salah (Jawaban: ${trueTotalLoss} dB)`}
+                   {checkExtraAnswer('totalLoss', trueTotalLoss) 
+                     ? '✅ Benar' 
+                     : `❌ Salah (Jawaban: ${trueTotalLoss} dB)`}
                  </span>
               )}
             </div>
           </div>
 
+        </div>
+
+        <div style={{ marginTop: '24px', padding: '12px', background: '#e3f2fd', border: '1px solid #90caf9', borderRadius: '4px', fontSize: '12px', color: '#0d47a1' }}>
+          <strong>💡 Panduan Cara Mengisi Form:</strong>
+          <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+            <li><strong>A. Jarak Kabel:</strong> Merupakan jarak letak kejadian <strong>Ujung Kabel (End of Fiber)</strong> yang terbaca pada grafik (bisa dicocokkan dengan parameter "Jarak Total" di panel kanan).</li>
+            <li><strong>B. Redaman /Km:</strong> Merupakan nilai redaman fiber optic standar per kilometer. Biasanya berada di sekitar angka <strong>0.200</strong> dB/km.</li>
+            <li><strong>C. Total Loss:</strong> Merupakan total kumulatif redaman dari seluruh jalur yang diukur (biasanya bisa disalin langsung dari parameter "Total Redaman" di panel informasi sebelah kanan).</li>
+          </ul>
         </div>
       </div>
     </div>

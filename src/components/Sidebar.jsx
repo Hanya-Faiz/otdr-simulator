@@ -58,7 +58,7 @@ export default function Sidebar({ sidebarData, cursorData }) {
           
           <div className="info-row">
             <div className="info-label">Jarak Total</div>
-            <div className="info-value">{(distanceRange || 0).toFixed(5)} km</div>
+            <div className="info-value">{(sidebarData.realTotalDistance || distanceRange || 0).toFixed(5)} km</div>
           </div>
           
           <div className="info-row">
