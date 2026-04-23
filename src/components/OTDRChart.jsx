@@ -103,6 +103,10 @@ export default function OTDRChart({ traceData, cursorA, cursorB, showCursors, on
         annotations: {} // controlled by useEffect
       },
       zoom: {
+        limits: {
+          x: { min: 'original', max: 'original', minRange: 0.1 },
+          y: { min: 'original', max: 'original', minRange: 5 }
+        },
         pan: {
           enabled: true,
           mode: 'x',

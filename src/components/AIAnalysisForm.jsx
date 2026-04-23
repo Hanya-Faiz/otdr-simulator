@@ -25,19 +25,19 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
         // Do nothing for normal events in the problem analysis unless it's the only one
       } else if (ev.type === 'splice') {
         if (ev.loss > 0.1) {
-          problemAnalysis.push(`Terdeteksi anomali pada jarak ${ev.distance.toFixed(4)} km berupa sambungan (splice) atau lekukan tajam (bending) dengan redaman ${ev.loss.toFixed(3)} dB. Nilai ini melebihi batas standar maksimal redaman splice yang direkomendasikan (maks 0.100 dB).`);
-          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Periksa fisik kabel. Jika terdapat lekukan tajam (macrobending), luruskan jalur kabel. Jika merupakan titik sambungan, lakukan penyambungan ulang (splicing) menggunakan splicer yang terkalibrasi agar redaman turun di bawah batas normal 0.100 dB.`);
+          problemAnalysis.push(`Terdeteksi anomali pada jarak ${ev.distance.toFixed(4)} km berupa sambungan (splice) atau lekukan tajam (bending) dengan redaman ${ev.loss.toFixed(3)} dB. Nilai ini melanggar standar redaman splice PT Telkom yang diizinkan (maksimal 0.100 dB).`);
+          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Periksa fisik kabel. Jika terdapat lekukan tajam (macrobending), luruskan jalur kabel. Jika merupakan titik sambungan, wajib lakukan pemotongan dan penyambungan ulang (splicing) menggunakan splicer yang terkalibrasi agar redaman turun dan lolos standar Telkom (≤ 0.100 dB).`);
           hasCriticalIssue = true;
         } else {
-          problemAnalysis.push(`Terdapat titik sambungan (splice) pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kualitas sambungan tergolong sangat baik (berada di bawah batas standar 0.100 dB).`);
+          problemAnalysis.push(`Terdapat titik sambungan (splice) pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kualitas sambungan tergolong sangat baik dan lolos standar PT Telkom (berada di bawah batas maksimal 0.100 dB).`);
         }
       } else if (ev.type === 'connector') {
         if (ev.loss > 0.5) {
-          problemAnalysis.push(`Terdeteksi konektor reflektif dengan redaman anomali mencapai ${ev.loss.toFixed(3)} dB pada jarak ${ev.distance.toFixed(4)} km. Nilai ini melanggar ambang batas toleransi standar redaman konektor (maks 0.500 dB).`);
-          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Cabut dan bersihkan ujung konektor optik menggunakan alat pembersih khusus (one-click cleaner / alkohol swab). Jika redaman masih tinggi, konektor kemungkinan cacat/tergores dan wajib diganti dengan patchcord/pigtail baru.`);
+          problemAnalysis.push(`Terdeteksi konektor reflektif dengan redaman tinggi/anomali mencapai ${ev.loss.toFixed(3)} dB pada jarak ${ev.distance.toFixed(4)} km. Nilai ini melebihi ambang batas toleransi standar redaman konektor PT Telkom (maksimal 0.500 dB).`);
+          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Segera cabut dan bersihkan ujung konektor optik menggunakan alat pembersih khusus (one-click cleaner / alkohol swab). Jika setelah dibersihkan redaman masih tidak lolos standar Telkom, konektor cacat/tergores dan wajib diganti dengan patchcord/pigtail baru.`);
           hasCriticalIssue = true;
         } else {
-          problemAnalysis.push(`Terdapat konektor reflektif pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kondisi konektor normal dan masih memenuhi standar (maks 0.500 dB).`);
+          problemAnalysis.push(`Terdapat konektor reflektif pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kondisi fisik konektor masih bersih, normal, dan memenuhi kriteria lolos standar PT Telkom (≤ 0.500 dB).`);
         }
       } else if (ev.type === 'end') {
         endOfFiberDist = ev.distance.toFixed(4);
