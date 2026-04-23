@@ -880,6 +880,97 @@ function App() {
                 </div>
               </div>
 
+              {/* Standar PT Telkom */}
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Standar Teknis PT Telkom Indonesia (FTTH)</div>
+
+                {/* Attenuation Table */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>📡 Standar Redaman Kabel (Fiber Attenuation)</div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', border: '1px solid #cfd8dc' }}>
+                    <thead><tr style={{ background: '#eceff1' }}>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Panjang Gelombang</th>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Redaman Maks</th>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Keterangan</th>
+                    </tr></thead>
+                    <tbody>
+                      {[
+                        ['1310 nm', '≤ 0.35 dB/km', 'Single Mode (O-Band). Digunakan untuk jarak menengah.'],
+                        ['1550 nm', '≤ 0.22 dB/km', 'Single Mode (C-Band). Standar utama jaringan FTTH Telkom.'],
+                        ['1625 nm', '≤ 0.22 dB/km', 'Single Mode (L-Band). Untuk monitoring tanpa gangguan live traffic.'],
+                      ].map(([wav, att, note], i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid #eceff1', background: i % 2 === 0 ? '#fff' : '#f9f9f9' }}>
+                          <td style={{ padding: '7px 10px', fontWeight: '600', color: '#1976d2' }}>{wav}</td>
+                          <td style={{ padding: '7px 10px', fontWeight: '600', color: '#c62828' }}>{att}</td>
+                          <td style={{ padding: '7px 10px', color: '#546e7a' }}>{note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Event Loss Table */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>⚡ Standar Redaman per Titik Kejadian (Event Loss)</div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', border: '1px solid #cfd8dc' }}>
+                    <thead><tr style={{ background: '#eceff1' }}>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Tipe Kejadian</th>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Batas Lolos</th>
+                      <th style={{ padding: '7px 10px', textAlign: 'left', borderBottom: '1px solid #cfd8dc', color: '#455a64' }}>Jika Melebihi</th>
+                    </tr></thead>
+                    <tbody>
+                      {[
+                        ['Splice / Sambungan (Fusion)', '≤ 0.10 dB', 'Lakukan splicing ulang dengan mesin yang terkalibrasi.'],
+                        ['Connector / Konektor', '≤ 0.50 dB', 'Bersihkan ujung konektor atau ganti dengan pigtail baru.'],
+                        ['Macrobending / Tekukan', '≤ 0.10 dB', 'Luruskan jalur kabel, pastikan radius lentur ≥ 30 mm.'],
+                      ].map(([type, limit, action], i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid #eceff1', background: i % 2 === 0 ? '#fff' : '#f9f9f9' }}>
+                          <td style={{ padding: '7px 10px', color: '#37474f' }}>{type}</td>
+                          <td style={{ padding: '7px 10px', fontWeight: '600', color: '#2e7d32' }}>{limit}</td>
+                          <td style={{ padding: '7px 10px', color: '#c62828', fontSize: '11px' }}>{action}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Link Budget Box */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>🔗 Standar Link Budget & Rx Power (FTTH OLT → ONT)</div>
+                  <div style={{ background: '#f3e5f5', border: '1px solid #ce93d8', borderRadius: '4px', padding: '12px', fontSize: '12px', color: '#4a148c' }}>
+                    <div style={{ marginBottom: '8px' }}><strong>Rumus Dasar:</strong> <code style={{ background: '#ede7f6', padding: '2px 6px', borderRadius: '3px' }}>Rx Power (dBm) = Tx Power OLT − Total Loss (dB)</code></div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '4px' }}>
+                      <tbody>
+                        {[
+                          ['Tx Power OLT (Asumsi Simulator)', '+3.00 dBm', '#1976d2'],
+                          ['Total Loss Layak (Telkom)', '15 dB – 28 dB', '#388e3c'],
+                          ['Rx Power Minimum ONT', '≥ −27 dBm', '#c62828'],
+                          ['Rx Power Maksimum ONT', '≤ −13 dBm', '#f57c00'],
+                          ['Status PASS (Koneksi Stabil)', '−13 dBm hingga −27 dBm', '#2e7d32'],
+                        ].map(([label, val, color], i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid #e1bee7' }}>
+                            <td style={{ padding: '5px 0', color: '#4a148c' }}>{label}</td>
+                            <td style={{ padding: '5px 0', fontWeight: '700', color }}>{val}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div style={{ marginTop: '8px', fontSize: '11px', fontStyle: 'italic' }}>
+                      * Jika Rx Power &lt; −27 dBm → pelanggan berisiko LOS (lampu merah). Jika &gt; −13 dBm → gunakan attenuator agar receiver ONT tidak rusak.
+                    </div>
+                  </div>
+                </div>
+
+                {/* dB vs dBm */}
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '12px', color: '#37474f', marginBottom: '6px' }}>📖 Perbedaan Satuan: dB vs dBm</div>
+                  <div style={{ background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '4px', padding: '12px', fontSize: '12px', color: '#1b5e20' }}>
+                    <p style={{ margin: '0 0 8px 0' }}><strong>dB (Decibel)</strong> — Satuan <em>rasio relatif</em>. Dipakai untuk menyatakan besaran redaman/kerugian sinyal sepanjang jalur. Selalu positif di OTDR (contoh: splice loss 0.08 dB, total loss 18.5 dB).</p>
+                    <p style={{ margin: 0 }}><strong>dBm (Decibel-milliwatt)</strong> — Satuan <em>daya optik absolut</em> relatif terhadap 1 mW. Digunakan untuk mengukur kekuatan sinyal aktual yang diterima perangkat. Nilai 0 dBm = 1 mW; nilai negatif berarti daya di bawah 1 mW (contoh: Rx Power −21 dBm ≈ 0.0079 mW — masih aman).</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Difficulty Levels */}
               <div>
                 <div style={{ fontWeight: '600', fontSize: '12px', color: '#546e7a', textTransform: 'uppercase', letterSpacing: '0.8px', borderBottom: '1px solid #b0bec5', paddingBottom: '6px', marginBottom: '10px' }}>Simulation Difficulty Levels</div>
