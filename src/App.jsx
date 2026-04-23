@@ -447,7 +447,7 @@ function App() {
          <div className="bottom-tabs">
             <div className={`bottom-tab ${activeBottomTab === 'quiz' ? 'active' : ''}`} onClick={() => setActiveBottomTab('quiz')}>Daftar Kejadian</div>
             <div className={`bottom-tab ${activeBottomTab === 'gambar' ? 'active' : ''}`} onClick={() => setActiveBottomTab('gambar')}>Gambar Kejadian</div>
-            <div className={`bottom-tab ${activeBottomTab === 'ai_analisis' ? 'active' : ''}`} onClick={() => setActiveBottomTab('ai_analisis')}>AI Analisis Masalah</div>
+            <div className={`bottom-tab ${activeBottomTab === 'ai_analisis' ? 'active' : ''}`} onClick={() => setActiveBottomTab('ai_analisis')}>Analisis Masalah Otomatis</div>
             
             {events.length > 0 && !showResults && activeBottomTab === 'quiz' && (
               <button 

@@ -9,7 +9,7 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
     if (isAnalyzing) return;
 
     if (!events || events.length === 0) {
-      setAnalysisText(["Silakan generate trace terlebih dahulu untuk memulai analisis AI."]);
+      setAnalysisText(["Silakan generate trace terlebih dahulu untuk memulai proses analisis otomatis."]);
       setTroubleshootingText(["-"]);
       return;
     }
@@ -23,28 +23,39 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
     events.forEach(ev => {
       if (ev.type === 'normal') {
         // Do nothing for normal events in the problem analysis unless it's the only one
-      } else if (ev.type === 'splice' && ev.loss > 0.1) {
-        problemAnalysis.push(`Terdeteksi sambungan (splice) atau lekukan (bending) dengan redaman tinggi (${ev.loss.toFixed(3)} dB) pada jarak ${ev.distance.toFixed(4)} km.`);
-        troubleshootingSteps.push(`Periksa fisik kabel di sekitar titik ${ev.distance.toFixed(4)} km. Lakukan penyambungan ulang (splicing) jika ditemukan patahan/kualitas sambungan buruk, atau luruskan kabel jika terdapat lekukan tajam (macrobending).`);
-        hasCriticalIssue = true;
-      } else if (ev.type === 'connector' && ev.loss > 0.5) {
-        problemAnalysis.push(`Terdeteksi konektor (reflektif) dengan redaman tidak normal (${ev.loss.toFixed(3)} dB) pada jarak ${ev.distance.toFixed(4)} km.`);
-        troubleshootingSteps.push(`Bersihkan ujung konektor optik di titik ${ev.distance.toFixed(4)} km menggunakan alat pembersih khusus (one-click cleaner / alkohol swab). Ganti konektor jika fisik terlihat cacat/tergores.`);
-        hasCriticalIssue = true;
+      } else if (ev.type === 'splice') {
+        if (ev.loss > 0.1) {
+          problemAnalysis.push(`Terdeteksi anomali pada jarak ${ev.distance.toFixed(4)} km berupa sambungan (splice) atau lekukan tajam (bending) dengan redaman ${ev.loss.toFixed(3)} dB. Nilai ini melebihi batas standar maksimal redaman splice yang direkomendasikan (maks 0.100 dB).`);
+          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Periksa fisik kabel. Jika terdapat lekukan tajam (macrobending), luruskan jalur kabel. Jika merupakan titik sambungan, lakukan penyambungan ulang (splicing) menggunakan splicer yang terkalibrasi agar redaman turun di bawah batas normal 0.100 dB.`);
+          hasCriticalIssue = true;
+        } else {
+          problemAnalysis.push(`Terdapat titik sambungan (splice) pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kualitas sambungan tergolong sangat baik (berada di bawah batas standar 0.100 dB).`);
+        }
+      } else if (ev.type === 'connector') {
+        if (ev.loss > 0.5) {
+          problemAnalysis.push(`Terdeteksi konektor reflektif dengan redaman anomali mencapai ${ev.loss.toFixed(3)} dB pada jarak ${ev.distance.toFixed(4)} km. Nilai ini melanggar ambang batas toleransi standar redaman konektor (maks 0.500 dB).`);
+          troubleshootingSteps.push(`Pada titik ${ev.distance.toFixed(4)} km: Cabut dan bersihkan ujung konektor optik menggunakan alat pembersih khusus (one-click cleaner / alkohol swab). Jika redaman masih tinggi, konektor kemungkinan cacat/tergores dan wajib diganti dengan patchcord/pigtail baru.`);
+          hasCriticalIssue = true;
+        } else {
+          problemAnalysis.push(`Terdapat konektor reflektif pada jarak ${ev.distance.toFixed(4)} km dengan redaman ${ev.loss.toFixed(3)} dB. Kondisi konektor normal dan masih memenuhi standar (maks 0.500 dB).`);
+        }
       } else if (ev.type === 'end') {
         endOfFiberDist = ev.distance.toFixed(4);
       }
     });
 
     if (problemAnalysis.length === 0) {
-      problemAnalysis.push(`Jejak OTDR menunjukkan kondisi kabel fiber optik dalam batas toleransi normal hingga titik akhir pengukuran.`);
+      problemAnalysis.push(`Jejak OTDR menunjukkan kondisi keseluruhan kabel fiber optik dalam batas toleransi standar operasional hingga titik pengukuran terakhir.`);
       if (endOfFiberDist) {
         problemAnalysis.push(`Kabel fiber optik berakhir di jarak ${endOfFiberDist} km.`);
       }
-      troubleshootingSteps.push(`Tidak ada tindakan perbaikan kritis yang diperlukan. Lakukan perawatan rutin (preventive maintenance) sesuai jadwal.`);
+      troubleshootingSteps.push(`Tidak ditemukan anomali redaman tinggi. Lakukan perawatan rutin (preventive maintenance) sesuai jadwal standar.`);
     } else {
       if (endOfFiberDist) {
-        problemAnalysis.push(`Kabel fiber optik berakhir/terputus total di jarak ${endOfFiberDist} km.`);
+        problemAnalysis.push(`Kabel fiber optik berakhir atau terputus total di jarak ${endOfFiberDist} km.`);
+      }
+      if (!hasCriticalIssue) {
+        troubleshootingSteps.push(`Tidak ada tindakan perbaikan kritis yang mendesak. Parameter redaman masih memenuhi kelayakan standar.`);
       }
     }
 
@@ -57,7 +68,7 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#1976d2', padding: '40px' }}>
         <Activity className="spinner-icon" size={48} style={{ marginBottom: '16px' }} />
-        <div style={{ fontSize: '16px', fontWeight: 'bold' }}>AI sedang menganalisis jejak OTDR...</div>
+        <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Sistem sedang menganalisis jejak OTDR...</div>
       </div>
     );
   }
@@ -66,7 +77,7 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
     <div className="table-container" style={{ width: '100%', height: '100%', overflow: 'auto', background: '#fff' }}>
       <div style={{ padding: '16px', borderBottom: '1px solid #cfd8dc', background: '#f5f6f7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h2 style={{ color: '#263238', margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-          <Activity size={16} color="#1976d2" /> Laporan Analisis AI
+          <Activity size={16} color="#1976d2" /> Laporan Analisis Kejadian
         </h2>
         <div style={{ fontSize: '11px', color: '#546e7a' }}>
           Digenerasi secara otomatis berdasarkan pembacaan jejak simulator
