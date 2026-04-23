@@ -37,15 +37,20 @@ export const generateOTDRTrace = (
   const numEvents = difficulty === 'Advanced' ? Math.floor(Math.random() * 3) + 4 : Math.floor(Math.random() * 3) + 2; 
   let lastEventDistance = dzLength * 2;
   
+  // Margin at the end to ensure events don't fall off the trace
+  const marginEnd = Math.min(2.0, totalDistance * 0.2); 
+
   for (let i = 0; i < numEvents; i++) {
-    // Determine distance: ensure it's spaced out, leaving some room at the end
-    const remainingDistance = totalDistance - 2 - lastEventDistance;
-    if (remainingDistance < 2) break;
+    // Determine distance: ensure it's spaced out, leaving room at the end
+    const remainingDistance = totalDistance - marginEnd - lastEventDistance;
+    if (remainingDistance < totalDistance * 0.05) break; // Not enough room
     
-    // add an event randomly in the next interval (Advanced has clumping)
-    let dist = lastEventDistance + 0.5 + Math.random() * (remainingDistance / (numEvents - i));
+    // add an event randomly in the next interval
+    const interval = remainingDistance / (numEvents - i);
+    let dist = lastEventDistance + (interval * 0.2) + Math.random() * (interval * 0.6);
+    
     if (difficulty === 'Advanced' && i > 0 && Math.random() > 0.7) {
-       dist = lastEventDistance + 0.2; // Micro bend / close splices
+       dist = lastEventDistance + Math.min(0.2, interval * 0.1); // Micro bend / close splices
     }
     
     // Type of event: connector, splice, or normal (noise)
@@ -80,7 +85,11 @@ export const generateOTDRTrace = (
   }
   
   // Add end of fiber
-  const endFiberDistance = totalDistance - (0.5 + Math.random() * 1.5);
+  // Scale the end offset based on total distance
+  const endOffsetMax = Math.min(1.5, totalDistance * 0.15);
+  const endOffsetMin = Math.min(0.5, totalDistance * 0.05);
+  const endFiberDistance = totalDistance - (endOffsetMin + Math.random() * (endOffsetMax - endOffsetMin));
+  
   events.push({
     id: events.length + 1,
     distance: parseFloat(endFiberDistance.toFixed(4)),
