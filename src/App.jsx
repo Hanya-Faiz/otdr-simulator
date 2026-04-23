@@ -485,7 +485,7 @@ function App() {
                <EventDiagram events={events} distanceRange={sidebarData.distanceRange} />
             )}
             {activeBottomTab === 'ai_analisis' && (
-               <AIAnalysisForm events={events} isAnalyzing={isAnalyzing} />
+               <AIAnalysisForm events={events} isAnalyzing={isAnalyzing} sidebarData={sidebarData} />
             )}
          </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Wrench, CheckCircle, AlertTriangle } from 'lucide-react';
 
-export default function AIAnalysisForm({ events, isAnalyzing }) {
+export default function AIAnalysisForm({ events, isAnalyzing, sidebarData }) {
   const [analysisText, setAnalysisText] = useState([]);
   const [troubleshootingText, setTroubleshootingText] = useState([]);
 
@@ -119,6 +119,45 @@ export default function AIAnalysisForm({ events, isAnalyzing }) {
           </div>
         </div>
       </div>
+
+      {/* Section C: Link Budget Telkom */}
+      {sidebarData && (
+        <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #cfd8dc' }}>
+          <div style={{ background: '#f9f9f9', padding: '10px 16px', borderBottom: '1px solid #cfd8dc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <Activity size={14} color="#673ab7" />
+             <h3 style={{ color: '#263238', margin: 0, fontSize: '13px', fontWeight: 'bold' }}>
+               C. Perhitungan Link Budget & Rx Power (Standar PT Telkom)
+             </h3>
+          </div>
+          <div style={{ padding: '16px', background: '#fff', fontSize: '12px', color: '#37474f' }}>
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+               <div style={{ flex: 1, minWidth: '250px' }}>
+                 <strong>Parameter Pengukuran (Asumsi FTTH):</strong>
+                 <ul style={{ paddingLeft: '20px', margin: '8px 0', lineHeight: '1.6' }}>
+                   <li>Daya Pancar OLT (Tx Power) Asumsi: <strong style={{ color: '#1976d2' }}>+3.00 dBm</strong></li>
+                   <li>Total Redaman Jalur (Total Loss): <strong style={{ color: '#d32f2f' }}>{sidebarData.totalLoss.toFixed(3)} dB</strong></li>
+                   <li>Estimasi Daya Terima (Rx Power): <strong>{ (3.00 - sidebarData.totalLoss).toFixed(3) } dBm</strong></li>
+                 </ul>
+               </div>
+               <div style={{ flex: 1, minWidth: '250px' }}>
+                 <strong>Analisis Standar PT Telkom:</strong>
+                 <div style={{ marginTop: '8px', padding: '10px', borderRadius: '4px', background: (3.00 - sidebarData.totalLoss) >= -27 && (3.00 - sidebarData.totalLoss) <= -13 ? '#e8f5e9' : '#ffebee', border: `1px solid ${(3.00 - sidebarData.totalLoss) >= -27 && (3.00 - sidebarData.totalLoss) <= -13 ? '#c8e6c9' : '#ffcdd2'}` }}>
+                    {(3.00 - sidebarData.totalLoss) >= -27 && (3.00 - sidebarData.totalLoss) <= -13 ? (
+                      <span><strong style={{ color: '#2e7d32' }}>✅ Lolos Standar:</strong> Nilai Rx Power { (3.00 - sidebarData.totalLoss).toFixed(3) } dBm berada dalam batas wajar (-13 dBm s.d -27 dBm). Koneksi internet pelanggan (ONT) akan stabil tanpa kendala redaman.</span>
+                    ) : (3.00 - sidebarData.totalLoss) < -27 ? (
+                      <span><strong style={{ color: '#c62828' }}>❌ Redaman Terlalu Tinggi (Gagal):</strong> Nilai Rx Power { (3.00 - sidebarData.totalLoss).toFixed(3) } dBm berada di bawah batas minimum PT Telkom (-27 dBm). Pelanggan berisiko mengalami Loss (Indikator Merah) atau koneksi putus-putus. Segera lakukan perbaikan (splicing ulang) pada titik redaman terbesar!</span>
+                    ) : (
+                      <span><strong style={{ color: '#f57c00' }}>⚠️ Daya Terlalu Besar:</strong> Nilai Rx Power { (3.00 - sidebarData.totalLoss).toFixed(3) } dBm melebihi batas toleransi perangkat (-13 dBm). Gunakan atenuator untuk menurunkan daya agar receiver optik pada ONT tidak rusak.</span>
+                    )}
+                 </div>
+               </div>
+            </div>
+            <div style={{ marginTop: '12px', fontSize: '11px', color: '#78909c', fontStyle: 'italic' }}>
+              * Catatan: Standar kelayakan link FTTH Telkom mengharuskan Total Loss berada di kisaran 15 dB - 28 dB dari OLT ke ONT, dengan daya terima (Rx Power) di perangkat akhir antara -13 dBm hingga -27 dBm. Rumus dasar: Rx Power = Tx Power - Total Loss.
+            </div>
+          </div>
+        </div>
+      )}
       
       <div style={{ padding: '8px 16px', borderTop: '1px solid #cfd8dc', display: 'flex', justifyContent: 'space-between', color: '#90a4ae', fontSize: '10px', background: '#f5f6f7' }}>
          <span>System: OTDR Simulator Engine v2.0</span>
