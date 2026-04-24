@@ -752,3 +752,611 @@ td {
   margin-top: 4px;
 }
 
+
+/* =====================================================================
+   RESPONSIVE — MOBILE / TABLET SUPPORT
+   breakpoint: 768px (tablet), 480px (phone)
+   ===================================================================== */
+
+/* ---- Shared base tweaks for touch devices ---- */
+@media (max-width: 768px) {
+  body {
+    overflow: auto; /* allow scrolling on mobile */
+    font-size: 12px;
+  }
+
+  .app-container {
+    height: auto;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  /* ---- Title bar ---- */
+  .window-title-bar {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+
+  /* ---- Menu bar ---- */
+  .top-menu-bar {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .menu-left {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .menu-tab {
+    padding: 8px 14px 6px;
+    font-size: 12px;
+  }
+
+  .menu-right {
+    display: none; /* collapse right menu on mobile */
+  }
+
+  /* ---- Toolbar ---- */
+  .toolbar-bar {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .toolbar-btn-group {
+    border-right: none;
+    border-bottom: 1px solid var(--yk-toolbar-border);
+    padding-right: 0;
+    padding-bottom: 8px;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .toolbar-options {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-width: 48px;
+    min-height: 36px;
+  }
+
+  /* ---- Main workspace: stack vertically on mobile ---- */
+  .main-workspace {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  /* Hide left tool strip on mobile to save space */
+  .left-tool-strip {
+    display: none;
+  }
+
+  /* Chart column takes full width */
+  .chart-column {
+    border-right: none;
+    border-bottom: 1px solid var(--yk-border);
+    min-height: 280px;
+  }
+
+  .chart-wrapper {
+    padding: 12px 16px 28px 12px;
+    min-height: 260px;
+  }
+
+  /* Chart mode header wraps on mobile */
+  .chart-header-modes {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  /* Control panel becomes horizontal scrolling strip */
+  .control-panel {
+    width: 100%;
+    border-right: none;
+    border-top: 1px solid var(--yk-border);
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0;
+  }
+
+  .panel-section {
+    border-bottom: none;
+    border-right: 1px solid #b9c1cb;
+    padding: 10px 12px;
+    flex-shrink: 0;
+    min-width: 140px;
+  }
+
+  /* D-pad shrink on mobile */
+  .yk-dpad {
+    width: 64px;
+    height: 64px;
+  }
+
+  .yk-cross-v {
+    width: 22px;
+    height: 64px;
+    left: 21px;
+  }
+
+  .yk-cross-h {
+    width: 64px;
+    height: 22px;
+    top: 21px;
+  }
+
+  .yk-cross-center {
+    width: 19px;
+    height: 19px;
+    left: 22.5px;
+    top: 22.5px;
+  }
+
+  .yk-dpad-icon.top    { width: 22px; height: 21px; left: 21px; }
+  .yk-dpad-icon.bottom { width: 22px; height: 21px; left: 21px; bottom: 0; }
+  .yk-dpad-icon.left   { width: 21px; height: 22px; left: 0; top: 21px; }
+  .yk-dpad-icon.right  { width: 21px; height: 22px; right: 0; top: 21px; }
+
+  /* Info sidebar becomes full-width card below workspace */
+  .info-sidebar {
+    width: 100%;
+    border-top: 1px solid var(--yk-border);
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  /* ---- Bottom panel ---- */
+  .bottom-panel {
+    height: auto;
+    max-height: none;
+    border-top: 2px solid var(--yk-border);
+  }
+
+  .bottom-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bottom-tab {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .bottom-content {
+    min-height: 220px;
+    overflow: auto;
+  }
+
+  /* ---- Tables ---- */
+  table {
+    font-size: 11px;
+  }
+
+  th, td {
+    padding: 5px 6px;
+  }
+
+  /* ---- Modals ---- */
+  .modal-content {
+    width: calc(100vw - 24px) !important;
+    max-width: 500px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .modal-body {
+    padding: 12px !important;
+  }
+
+  /* ---- Multi fiber tab ---- */
+  .mf-kelompok-panel {
+    width: 100%;
+    max-height: 80px;
+    border-right: none;
+    border-bottom: 1px solid var(--yk-border);
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .mf-bottom-dropdowns {
+    flex-wrap: wrap;
+  }
+}
+
+/* =====================================================================
+   PHONE BREAKPOINT — ≤ 480px (extra small)
+   ===================================================================== */
+@media (max-width: 480px) {
+  body {
+    font-size: 11px;
+  }
+
+  .window-title-bar {
+    font-size: 9px;
+  }
+
+  .menu-tab {
+    padding: 7px 10px 5px;
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  /* Toolbar: stack all items vertically */
+  .toolbar-bar {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  .toolbar-btn-group {
+    gap: 6px;
+  }
+
+  .action-btn {
+    font-size: 10px;
+    padding: 5px 8px;
+    min-height: 32px;
+  }
+
+  .toolbar-options span {
+    font-size: 10px;
+  }
+
+  /* Chart gets taller on small screen so trace is readable */
+  .chart-column {
+    min-height: 220px;
+  }
+
+  .chart-wrapper {
+    min-height: 200px;
+    padding: 8px 10px 24px 8px;
+  }
+
+  .chart-header-modes {
+    font-size: 10px;
+    padding: 5px 8px;
+    gap: 5px;
+  }
+
+  /* Control panel: shrink each section */
+  .panel-section {
+    padding: 8px;
+    min-width: 120px;
+  }
+
+  .yk-btn {
+    font-size: 10px;
+    padding: 5px 4px;
+  }
+
+  .yk-section-title {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  /* D-pad smaller on phone */
+  .yk-dpad {
+    width: 56px;
+    height: 56px;
+  }
+
+  .yk-cross-v {
+    width: 18px;
+    height: 56px;
+    left: 19px;
+  }
+
+  .yk-cross-h {
+    width: 56px;
+    height: 18px;
+    top: 19px;
+  }
+
+  .yk-cross-center {
+    width: 15px;
+    height: 15px;
+    left: 20.5px;
+    top: 20.5px;
+  }
+
+  .yk-zoom-btn {
+    width: 36px;
+    height: 22px;
+  }
+
+  /* Sidebar info: 2-col compact grid on phone */
+  .sidebar-content .info-section-title {
+    font-size: 10px;
+  }
+
+  .info-label {
+    font-size: 10px;
+  }
+
+  .info-value {
+    font-size: 11px;
+  }
+
+  .info-sidebar {
+    max-height: 200px;
+  }
+
+  /* Bottom tabs: smaller */
+  .bottom-tab {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  .bottom-content {
+    min-height: 200px;
+  }
+
+  /* Tables more compact */
+  table {
+    font-size: 10px;
+  }
+
+  th, td {
+    padding: 4px 5px;
+  }
+
+  /* Modal full-screen on phone */
+  .modal-content {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    max-height: 100vh;
+    margin: 0 !important;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+  }
+
+  /* Quiz table horizontal scroll */
+  .bottom-content table {
+    min-width: 500px;
+  }
+
+  .bottom-content {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* =====================================================================
+   MOBILE BOTTOM NAV BAR
+   Fixed bottom navigation — displayed only on mobile (≤ 768px)
+   ===================================================================== */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #2b3947;
+    border-top: 1px solid #455a64;
+    height: 58px;
+    align-items: stretch;
+  }
+
+  .mobile-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #90a4ae;
+    cursor: pointer;
+    padding: 4px 2px;
+    gap: 3px;
+    font-size: 9px;
+    letter-spacing: 0.3px;
+    transition: color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-btn.active {
+    color: #64b5f6;
+    background: rgba(100, 181, 246, 0.08);
+  }
+
+  .mobile-nav-btn:active {
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Push page content up so bottom nav doesn't cover it */
+  .app-container {
+    padding-bottom: 58px;
+  }
+}
+
+/* =====================================================================
+   MOBILE PANEL SHOW/HIDE via data-mobile-panel attribute
+   Each panel section has a data attribute for mobile toggling
+   ===================================================================== */
+@media (max-width: 768px) {
+  /* Hide chart, quiz, sidebar, etc. behind mobile panel toggling */
+  .mobile-panel-chart,
+  .mobile-panel-quiz,
+  .mobile-panel-info,
+  .mobile-panel-help {
+    display: none !important;
+  }
+
+  .mobile-panel-chart.mobile-active,
+  .mobile-panel-quiz.mobile-active,
+  .mobile-panel-info.mobile-active,
+  .mobile-panel-help.mobile-active {
+    display: flex !important;
+  }
+
+  /* Chart panel needs column layout */
+  .mobile-panel-chart.mobile-active {
+    flex-direction: column;
+  }
+
+  /* Quiz panel fills full width */
+  .mobile-panel-quiz.mobile-active {
+    flex-direction: column;
+  }
+
+  /* Info sidebar full width */
+  .mobile-panel-info.mobile-active {
+    flex-direction: column;
+    max-height: none;
+  }
+
+  /* Section always visible outside panels */
+  .mobile-always-visible {
+    display: flex !important;
+  }
+}
+
+/* =====================================================================
+   MOBILE GENERATE BUTTON — sticky at top on mobile
+   ===================================================================== */
+@media (max-width: 768px) {
+  .mobile-generate-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--yk-toolbar-bg);
+    border-bottom: 1px solid var(--yk-toolbar-border);
+    padding: 8px 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .mobile-generate-strip select {
+    flex: 1;
+    min-width: 90px;
+    padding: 6px 8px;
+    border: 1px solid #b0bec5;
+    border-radius: 4px;
+    font-size: 12px;
+    background: #fff;
+    color: #263238;
+  }
+
+  .mobile-generate-strip .gen-btn {
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    min-height: 36px;
+  }
+
+  .mobile-generate-strip .gen-btn:active {
+    background: #1565c0;
+  }
+
+  .mobile-generate-strip .load-btn {
+    background: transparent;
+    color: #546e7a;
+    border: 1px solid #b0bec5;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-generate-strip {
+    display: none; /* only show on mobile */
+  }
+}
+
+/* =====================================================================
+   SCORE BADGE & QUIZ ACTION BAR (mobile)
+   ===================================================================== */
+@media (max-width: 768px) {
+  .mobile-quiz-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--yk-toolbar-bg);
+    border-bottom: 1px solid var(--yk-border);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-score-badge {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .mobile-score-badge.partial {
+    background: #fff3e0;
+    color: #e65100;
+  }
+}
+
+/* =====================================================================
+   UTILITY — Smooth touch scrolling
+   ===================================================================== */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Increase tap targets throughout */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  select {
+    min-height: 32px;
+  }
+
+  button {
+    min-height: 32px;
+  }
+}

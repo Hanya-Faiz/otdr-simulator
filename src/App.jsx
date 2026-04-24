@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, Save, Download, Settings as SettingsIcon, HelpCircle, FolderOpen, Upload, LogOut, FileText, ChevronRight, Minimize2, ZoomIn, ZoomOut, Maximize, Activity, List, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Search, Plus, X } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Play, Save, Download, Settings as SettingsIcon, HelpCircle, FolderOpen, Upload, LogOut, FileText, ChevronRight, Minimize2, ZoomIn, ZoomOut, Maximize, Activity, List, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Search, Plus, X, BarChart2, ClipboardList, BrainCircuit, Info } from 'lucide-react';
 import { generateOTDRTrace, detectEventsFromTrace } from './utils/otdrSimulation';
 import { exportToSOR } from './utils/exportSor';
 import { exportViaInjection, applyInjectionAndDownload } from './utils/exportSorInjector';
@@ -45,6 +45,17 @@ function App() {
   
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+  // ---- Mobile responsive state ----
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+  // mobilePanel: 'chart' | 'quiz' | 'ai' | 'info'
+  const [mobilePanel, setMobilePanel] = useState('chart');
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fileInputRef = useRef(null);
 
@@ -271,6 +282,25 @@ function App() {
       {/* Title Bar */}
       <div className="window-title-bar">YOKOGAWA AQ7933 SIMULATOR</div>
 
+      {/* ---- MOBILE: Quick generate strip (always visible) ---- */}
+      <div className="mobile-generate-strip">
+        <button className="load-btn" onClick={handleLoadClick}>
+          <FolderOpen size={15} /> Baca .SOR
+        </button>
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <option value="Easy">Easy</option>
+          <option value="Normal">Normal</option>
+          <option value="Hard">Hard</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+        <button className="gen-btn" onClick={handleGenerateTrace}>
+          <Play size={14} fill="white" /> GENERATE
+        </button>
+      </div>
+
       {/* Menu Bar */}
       <div className="top-menu-bar">
         <div className="menu-left">
@@ -330,7 +360,7 @@ function App() {
 
       {/* Main Workspace */}
       <div className="main-workspace">
-        {/* Left mini strip */}
+        {/* Left mini strip — hidden on mobile via CSS */}
         <div className="left-tool-strip">
            <span style={{ color: '#546e7a', fontWeight: 'bold' }}>&gt;</span>
            <Activity size={16} className="tool-icon active" />
@@ -342,8 +372,8 @@ function App() {
            <SettingsIcon size={16} className="tool-icon" />
         </div>
 
-        {/* Chart Area */}
-        <div className="chart-column">
+        {/* Chart Area — mobile-panel-chart class enables CSS-driven visibility */}
+        <div className={`chart-column mobile-panel-chart${mobilePanel === 'chart' ? ' mobile-active' : ''}`}>
            <div className="chart-header-modes">
               <span>Mode: </span>
               <label><input type="radio" name="mode" defaultChecked /> Analisa Kejadian</label>
@@ -383,8 +413,8 @@ function App() {
            </div>
         </div>
 
-        {/* Control Panel (Yokogawa Native Style) */}
-        <div className="control-panel">
+        {/* Control Panel — always visible on desktop, mobile: shown with chart panel */}
+        <div className={`control-panel mobile-panel-chart${mobilePanel === 'chart' ? ' mobile-active' : ''}`}>
            <div className="panel-section" style={{ paddingTop: '16px' }}>
               <button className="yk-btn">Pencarian Otomatis</button>
               <button className="yk-btn">Pengaturan Analisa</button>
@@ -443,25 +473,35 @@ function App() {
            </div>
         </div>
 
-        {/* Info Sidebar */}
-        <div className="info-sidebar">
+        {/* Info Sidebar — mobile: shown only when mobilePanel === 'info' */}
+        <div className={`info-sidebar mobile-panel-info${mobilePanel === 'info' ? ' mobile-active' : ''}`}>
           <Sidebar sidebarData={sidebarData} cursorData={{A: cursorA, B: cursorB}} />
         </div>
       </div>
 
-      {/* Bottom Panel */}
-      <div className="bottom-panel">
+      {/* Bottom Panel — mobile: shown when mobilePanel === 'quiz' or 'ai' */}
+      <div className={`bottom-panel mobile-panel-quiz${(mobilePanel === 'quiz' || mobilePanel === 'ai') ? ' mobile-active' : ''}`}>
+         {/* Mobile: quiz action bar with score badge */}
+         {showResults && score && (
+           <div className="mobile-quiz-action-bar">
+             <span>Hasil Kuis:</span>
+             <span className={`mobile-score-badge${score.percentage < 100 ? ' partial' : ''}`}>
+               {score.correct}/{score.total} — {score.percentage}%
+             </span>
+           </div>
+         )}
+
          <div className="bottom-tabs">
-            <div className={`bottom-tab ${activeBottomTab === 'quiz' ? 'active' : ''}`} onClick={() => setActiveBottomTab('quiz')}>Daftar Kejadian</div>
-            <div className={`bottom-tab ${activeBottomTab === 'gambar' ? 'active' : ''}`} onClick={() => setActiveBottomTab('gambar')}>Gambar Kejadian</div>
-            <div className={`bottom-tab ${activeBottomTab === 'ai_analisis' ? 'active' : ''}`} onClick={() => setActiveBottomTab('ai_analisis')}>Analisis Masalah Otomatis</div>
+            <div className={`bottom-tab ${activeBottomTab === 'quiz' ? 'active' : ''}`} onClick={() => { setActiveBottomTab('quiz'); if (isMobile) setMobilePanel('quiz'); }}>Daftar Kejadian</div>
+            <div className={`bottom-tab ${activeBottomTab === 'gambar' ? 'active' : ''}`} onClick={() => { setActiveBottomTab('gambar'); if (isMobile) setMobilePanel('quiz'); }}>Gambar Kejadian</div>
+            <div className={`bottom-tab ${activeBottomTab === 'ai_analisis' ? 'active' : ''}`} onClick={() => { setActiveBottomTab('ai_analisis'); if (isMobile) setMobilePanel('ai'); }}>Analisis Masalah Otomatis</div>
             
             {events.length > 0 && !showResults && activeBottomTab === 'quiz' && (
               <button 
                 style={{ marginLeft: 'auto', marginRight: '16px', background: '#1976d2', color: 'white', border: 'none', padding: '0 16px', cursor: 'pointer', fontSize: '12px' }}
                 onClick={handleCheckAnswers}
               >
-                Cek Jawaban Kuis
+                Cek Jawaban
               </button>
             )}
             {showResults && score && activeBottomTab === 'quiz' && (
@@ -1019,6 +1059,58 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* =========================================================
+           MOBILE BOTTOM NAVIGATION BAR
+           Only visible on screens ≤ 768px via CSS
+         ========================================================= */}
+      <nav className="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+        <button
+          id="mobile-nav-chart"
+          className={`mobile-nav-btn${mobilePanel === 'chart' ? ' active' : ''}`}
+          onClick={() => setMobilePanel('chart')}
+          aria-label="Grafik OTDR"
+        >
+          <BarChart2 size={20} />
+          <span>Grafik</span>
+        </button>
+
+        <button
+          id="mobile-nav-quiz"
+          className={`mobile-nav-btn${mobilePanel === 'quiz' ? ' active' : ''}`}
+          onClick={() => { setMobilePanel('quiz'); setActiveBottomTab('quiz'); }}
+          aria-label="Kuis Kejadian"
+        >
+          <ClipboardList size={20} />
+          {showResults && score ? (
+            <span style={{ color: score.percentage === 100 ? '#66bb6a' : '#ffa726' }}>
+              {score.percentage}%
+            </span>
+          ) : (
+            <span>Kuis</span>
+          )}
+        </button>
+
+        <button
+          id="mobile-nav-ai"
+          className={`mobile-nav-btn${mobilePanel === 'ai' ? ' active' : ''}`}
+          onClick={() => { setMobilePanel('ai'); setActiveBottomTab('ai_analisis'); }}
+          aria-label="Analisis AI"
+        >
+          <BrainCircuit size={20} />
+          <span>Analisis AI</span>
+        </button>
+
+        <button
+          id="mobile-nav-info"
+          className={`mobile-nav-btn${mobilePanel === 'info' ? ' active' : ''}`}
+          onClick={() => setMobilePanel('info')}
+          aria-label="Info Parameter"
+        >
+          <Info size={20} />
+          <span>Info</span>
+        </button>
+      </nav>
     </div>
   );
 }
