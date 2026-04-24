@@ -484,7 +484,7 @@ Project ini dibuat untuk keperluan pendidikan dan pelatihan teknik fiber optik.
 
 <div align="center">
 
-Dibuat dengan ❤️ untuk siswa SMK Teknik Komputer dan Jaringan
+Dibuat oleh @HanyaFaiz untuk siswa SMK Teknik Komputer dan Jaringan
 
 **[Buka Simulator →](https://otdr-simulator.vercel.app)**
 
