@@ -308,8 +308,6 @@ function App() {
           <button className={`menu-tab ${activeMainTab === 'multifiber' ? 'active' : ''}`} onClick={() => setActiveMainTab('multifiber')}><List size={14} /> Proyek Multi Fiber</button>
         </div>
         <div className="menu-right">
-          <button className="menu-icon-btn"><FolderOpen size={14} fill="white" color="#4f6376" /> Utility <ChevronRight size={14} /></button>
-          <button className="menu-icon-btn">APP OTDRApps <ChevronRight size={14} /></button>
           <button className="menu-icon-btn" onClick={() => setIsSettingsOpen(true)}><SettingsIcon size={14} /> Pengaturan</button>
           <button className="menu-icon-btn" onClick={() => setIsHelpOpen(true)}><HelpCircle size={14} /> Bantuan</button>
         </div>
@@ -360,17 +358,7 @@ function App() {
 
       {/* Main Workspace */}
       <div className="main-workspace">
-        {/* Left mini strip — hidden on mobile via CSS */}
-        <div className="left-tool-strip">
-           <span style={{ color: '#546e7a', fontWeight: 'bold' }}>&gt;</span>
-           <Activity size={16} className="tool-icon active" />
-           <FolderOpen size={16} className="tool-icon" />
-           <Upload size={16} className="tool-icon" />
-           <ArrowDown size={16} className="tool-icon" />
-           <ArrowUp size={16} className="tool-icon" />
-           <div style={{ borderBottom: '1px solid #cfd8dc', width: '16px', margin: '4px 0' }}></div>
-           <SettingsIcon size={16} className="tool-icon" />
-        </div>
+
 
         {/* Chart Area — mobile-panel-chart class enables CSS-driven visibility */}
         <div className={`chart-column mobile-panel-chart${mobilePanel === 'chart' ? ' mobile-active' : ''}`}>
@@ -413,65 +401,6 @@ function App() {
            </div>
         </div>
 
-        {/* Control Panel — always visible on desktop, mobile: shown with chart panel */}
-        <div className={`control-panel mobile-panel-chart${mobilePanel === 'chart' ? ' mobile-active' : ''}`}>
-           <div className="panel-section" style={{ paddingTop: '16px' }}>
-              <button className="yk-btn">Pencarian Otomatis</button>
-              <button className="yk-btn">Pengaturan Analisa</button>
-              <button className="yk-btn">Pemrosesan Batch</button>
-           </div>
-           
-           <div className="panel-section">
-              <div className="yk-section-title">Kursor</div>
-              
-              <div className="yk-dpad-wrapper">
-                 <div className="yk-dpad">
-                    {/* The Cross Backgrounds */}
-                    <div className="yk-cross-v"></div>
-                    <div className="yk-cross-h"></div>
-                    {/* Center piece to hide overlapping inner borders */}
-                    <div className="yk-cross-center">
-                       <Search size={14} color="#5c728a" style={{ transform: 'rotate(90deg)' }} />
-                    </div>
-                    {/* The Icons */}
-                    <div className="yk-dpad-icon top">+</div>
-                    <div className="yk-dpad-icon bottom">-</div>
-                    <div className="yk-dpad-icon left">-</div>
-                    <div className="yk-dpad-icon right">+</div>
-                 </div>
-
-                 <div className="yk-zoom-col">
-                    <button className="yk-zoom-btn"><ZoomIn size={14} /></button>
-                    <button className="yk-zoom-btn" style={{ fontSize: '9px', lineHeight: '9px', textAlign: 'center' }}>
-                       <span style={{ transform: 'scale(0.8)' }}>↖↗<br/>100%<br/>↙↘</span>
-                    </button>
-                    <button className="yk-zoom-btn"><ZoomOut size={14} /></button>
-                 </div>
-              </div>
-              
-              <button className="yk-btn">Kursor off</button>
-           </div>
-
-           <div className="panel-section" style={{ borderBottom: 'none' }}>
-              <div className="yk-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Menandai</span>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                  <input type="checkbox" style={{ margin: 0 }} /> REF
-                </label>
-              </div>
-              
-              <div className="yk-grid-2">
-                 <button className="yk-grid-btn">M1</button>
-                 <button className="yk-grid-btn">Y1</button>
-                 <button className="yk-grid-btn">M2</button>
-                 <button className="yk-grid-btn">Y2</button>
-                 <button className="yk-grid-btn">M3</button>
-                 <button className="yk-grid-btn">Y3</button>
-              </div>
-              
-              <button className="yk-btn">Hapus Penanda</button>
-           </div>
-        </div>
 
         {/* Info Sidebar — mobile: shown only when mobilePanel === 'info' */}
         <div className={`info-sidebar mobile-panel-info${mobilePanel === 'info' ? ' mobile-active' : ''}`}>
