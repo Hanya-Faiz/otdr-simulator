@@ -305,7 +305,6 @@ function App() {
       <div className="top-menu-bar">
         <div className="menu-left">
           <button className={`menu-tab ${activeMainTab === 'analisis' ? 'active' : ''}`} onClick={() => setActiveMainTab('analisis')}><Activity size={14} /> Analisis</button>
-          <button className={`menu-tab ${activeMainTab === 'multifiber' ? 'active' : ''}`} onClick={() => setActiveMainTab('multifiber')}><List size={14} /> Proyek Multi Fiber</button>
         </div>
         <div className="menu-right">
           <button className="menu-icon-btn" onClick={() => setIsSettingsOpen(true)}><SettingsIcon size={14} /> Pengaturan</button>
@@ -460,109 +459,7 @@ function App() {
       </div>
       </>)}
 
-      {/* ===================== MULTI FIBER TAB ===================== */}
-      {activeMainTab === 'multifiber' && (<>
-      {/* Multi Fiber Toolbar */}
-      <div className="toolbar-bar">
-        <div className="toolbar-btn-group">
-          <button className="action-btn"><Plus size={18} /> Baru</button>
-          <button className="action-btn" onClick={handleLoadClick}><FolderOpen size={18} /> Baca</button>
-          <button className="action-btn"><Save size={18} color="#cfd8dc" /> Simpan</button>
-          <button className="action-btn" onClick={() => setIsFiberSettingsOpen(true)}><SettingsIcon size={18} /> Pengaturan</button>
-        </div>
-        <div className="toolbar-options" style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span>Nama Model : <input type="text" style={{ border: 'none', borderBottom: '1px solid #b0bec5', background: 'transparent', width: '150px', outline: 'none', fontSize: '12px' }} /></span>
-          <span>Nama Proyek : <input type="text" style={{ border: 'none', borderBottom: '1px solid #b0bec5', background: 'transparent', width: '200px', outline: 'none', fontSize: '12px' }} /></span>
-        </div>
-      </div>
 
-      {/* Multi Fiber Main Content */}
-      <div className="main-workspace">
-        {/* Left Kelompok panel */}
-        <div className="mf-kelompok-panel">
-          <div className="mf-kelompok-header">Kelompok</div>
-          <div className="mf-kelompok-body">
-            <SettingsIcon size={16} style={{ color: '#90a4ae', cursor: 'pointer', margin: '8px auto', display: 'block' }} />
-          </div>
-        </div>
-
-        {/* Main table area */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{ flex: 1, overflow: 'auto', background: '#fff' }}>
-            <table className="mf-table">
-              <thead>
-                <tr>
-                  <th>No. Fiber</th>
-                  <th>Nama Kelompok</th>
-                  <th>Status Pengukuran</th>
-                  <th>Rentang Jarak</th>
-                  <th>Lebar Pulsa</th>
-                  <th>Redaman</th>
-                  <th>Metode Rata - rata</th>
-                  <th>Contoh Interval</th>
-                  <th>Satuan Rata - rata</th>
-                  <th>Durasi/Waktu</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td colSpan="10" style={{ textAlign: 'center', padding: '80px 0', color: '#b0bec5', fontSize: '14px' }}>Belum ada data fiber — klik Baru untuk menambahkan</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Bottom settings row */}
-          <div className="mf-bottom-settings">
-            <div className="mf-bottom-row-top">
-              <span className="mf-setting-label">Panjang Gelombang</span>
-              <span className="mf-setting-label" style={{ marginLeft: '80px' }}>Nama Penyimpanan</span>
-              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <span className="mf-setting-label">Lewatkan</span>
-                <label><input type="radio" name="lewatkan" defaultChecked /> ON</label>
-                <label><input type="radio" name="lewatkan" /> OFF</label>
-                <button className="mf-status-btn">Status Alat</button>
-              </div>
-            </div>
-            <div style={{ fontSize: '11px', color: '#90a4ae', textAlign: 'right', padding: '2px 8px' }}>Status Pengukuran</div>
-            
-            <div className="mf-bottom-dropdowns">
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">No. Fiber</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Nama Kelompok</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Rentang Jarak</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Lebar Pulsa</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Redaman</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Metode Rata - rata</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Contoh Interval</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-              <div className="mf-dd-group">
-                <span className="mf-dd-label">Satuan Rata - rata</span>
-                <select className="mf-dd-select"><option>—</option></select>
-              </div>
-            </div>
-            <div style={{ padding: '4px 8px', fontSize: '11px', color: '#546e7a' }}>Durasi Rata - Rata</div>
-          </div>
-        </div>
-      </div>
-      </>)}
 
       {/* ===================== MODALS ===================== */}
 
